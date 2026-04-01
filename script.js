@@ -112,6 +112,21 @@ function toggleChat() {
     }
 }
 
+// --- НОВАЯ ФУНКЦИЯ: МОБИЛЬНОЕ МЕНЮ ---
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    if (!menu) return;
+    if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        menu.classList.add('flex');
+        document.body.style.overflow = 'hidden'; // prevent scroll behind
+    } else {
+        menu.classList.add('hidden');
+        menu.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+}
+
 // Элементы чата
 document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.querySelector('#chat-window input');
@@ -142,6 +157,12 @@ async function handleUserMessage() {
             ? crypto.randomUUID()
             : (`${Date.now()}_${Math.random().toString(16).slice(2)}`);
         localStorage.setItem('qadam_chat_id', chatId);
+    }
+
+    // Убеждаемся, что окно чата на мобильных не слишком узкое ( Tailwind w-85 — ошибка, исправляем на w-[calc(100%-2rem)] )
+    const chatWindow = document.getElementById('chat-window');
+    if (chatWindow && !chatWindow.classList.contains('md:w-96')) {
+        chatWindow.classList.add('w-[calc(100%-2rem)]', 'md:w-96');
     }
 
     const sendBtn = document.querySelector('#chat-window button');
@@ -218,24 +239,10 @@ function removeMessage(id) {
  * EDUPATH AI - ПОЛНЫЙ КОНТРОЛЛЕР С ЗАЩИТОЙ ДОСТУПА
  */
 
-// --- 1. ПРОВЕРКА ДОСТУПА ---
+// --- 1. ПРОВЕРКА ДОСТУПА (ВРЕМЕННО ОТКЛЮЧЕНО) ---
 function checkAuth(targetPage) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-    if (isLoggedIn === 'true') {
-        // Если залогинен — летим на страницу
-        window.location.href = targetPage;
-    } else {
-        // Если нет — показываем тост и не пускаем
-        showToast("Для доступа нужно зарегистрироваться! 🛡️");
-        
-        // Немного подсветим кнопку регистрации для подсказки
-        const regBtn = document.querySelector('a[href="register.html"]');
-        if (regBtn) {
-            regBtn.classList.add('scale-110', 'ring-4', 'ring-indigo-500/50');
-            setTimeout(() => regBtn.classList.remove('scale-110', 'ring-4', 'ring-indigo-500/50'), 2000);
-        }
-    }
+    // Временно разрешаем переход на любые страницы без проверки
+    window.location.href = targetPage;
 }
 
 // --- 2. РЕГИСТРАЦИЯ ---
@@ -313,21 +320,24 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNavUI();
 });
 
-// --- НОВАЯ ФУНКЦИЯ: ДИНАМИЧЕСКАЯ НАВИГАЦИЯ ---
+// --- НОВАЯ ФУНКЦИЯ: ДИНАМИЧЕСКАЯ НАВИГАЦИЯ (ВРЕМЕННО СКРЫВАЕМ ВСЕ) ---
 function updateNavUI() {
-    const loginBtn = document.getElementById('nav-login-btn');
-    const profileBtn = document.getElementById('nav-profile-btn');
-    const token = localStorage.getItem('qadam_token');
-
-    if (token) {
-        // Пользователь ВОШЕЛ
-        if (loginBtn) loginBtn.classList.add('hidden');
-        if (profileBtn) profileBtn.classList.remove('hidden');
-    } else {
-        // Пользователь НЕ вошел
-        if (loginBtn) loginBtn.classList.remove('hidden');
-        if (profileBtn) profileBtn.classList.add('hidden');
-    }
+    console.log('--- AUTH BYPASS ACTIVE ---');
+    // Скрываем все элементы, связанные с авторизацией
+    const authElements = [
+        'nav-login-btn', 
+        'nav-profile-btn', 
+        'mobile-login-btn', 
+        'mobile-profile-btn'
+    ];
+    
+    authElements.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.add('hidden');
+            el.style.display = 'none'; // Принудительно через style
+        }
+    });
 }
 
 // --- 5. ЧАТ ---
@@ -561,21 +571,9 @@ async function loadSubjects() {
     }
 }
 
-// Функция для защиты страниц (Protected Routes)
+// Функция для защиты страниц (ОТКЛЮЧЕНО ДЛЯ ТЕСТОВ)
 function protectPage() {
-    const token = localStorage.getItem('qadam_token');
-    const currentPage = window.location.pathname;
-
-    // Список страниц, куда НЕЛЬЗЯ заходить без логина
-    const protectedPages = ['profile.html', 'test.html', 'grant.html', 'universities.html', 'university.html'];
-
-    // Проверяем, находится ли пользователь на защищенной странице
-    const isProtected = protectedPages.some(page => currentPage.includes(page));
-
-    if (isProtected && !token) {
-        alert('⚠️ Эта страница доступна только авторизованным пользователям.');
-        window.location.href = 'login.html'; // Выкидываем на вход
-    }
+    return; // Разрешаем доступ ко всем страницам
 }
 
 // Проверка: является ли текущий пользователь администратором

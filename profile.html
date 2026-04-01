@@ -17,20 +17,47 @@
 
     <nav class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/10 bg-white/50 dark:bg-transparent mb-8">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="index.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
-                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-sm italic text-white">E</div>
-                <span class="hidden sm:inline">Личный кабинет</span>
+            <a href="index.html" class="text-lg font-extrabold tracking-tighter flex items-center gap-1 shrink-0">
+                <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
             </a>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 shrink-0">
                 <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
                     <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400"></i>
                 </button>
-                <a href="login.html" id="nav-login-btn" class="hidden text-sm font-bold opacity-70 hover:opacity-100 transition">
-                    <i class="fas fa-sign-in-alt mr-1"></i> Войти
+                <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex items-center justify-center glass rounded-xl bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-slate-700 dark:text-slate-300">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="hidden md:inline-flex items-center gap-2 text-sm font-bold opacity-70 hover:opacity-100 transition">
+                    <i class="fas fa-home"></i> Главная
                 </a>
-                <a href="index.html" id="nav-profile-btn" class="hidden text-sm font-bold opacity-70 hover:opacity-100 transition">
-                    <i class="fas fa-home mr-1"></i> На главную
+            </div>
+        </div>
+        <!-- Mobile overlay -->
+        <div id="mobile-menu" class="hidden fixed inset-0 z-[200] bg-white dark:bg-slate-900 flex-col overflow-y-auto md:hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-white/10">
+                <a href="index.html" onclick="toggleMobileMenu()" class="text-2xl font-black text-indigo-600 italic">QADAM.AI</a>
+                <button onclick="toggleMobileMenu()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-white/10 text-2xl text-slate-500 hover:text-indigo-600 transition">&times;</button>
+            </div>
+            <nav class="flex flex-col px-6 py-4 text-lg font-semibold text-slate-700 dark:text-slate-200">
+                <a href="index.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 py-4 border-b border-gray-100 dark:border-white/10 hover:text-indigo-600 transition">
+                    <i class="fas fa-home w-6 text-indigo-400"></i> Главная
                 </a>
+                <a href="javascript:checkAuth('test.html')" onclick="toggleMobileMenu()" class="flex items-center gap-3 py-4 border-b border-gray-100 dark:border-white/10 hover:text-indigo-600 transition">
+                    <i class="fas fa-brain w-6 text-indigo-400"></i> Профориентация
+                </a>
+                <a href="javascript:checkAuth('ent.html')" onclick="toggleMobileMenu()" class="flex items-center gap-3 py-4 border-b border-gray-100 dark:border-white/10 hover:text-indigo-600 transition">
+                    <i class="fas fa-graduation-cap w-6 text-indigo-400"></i> Тренажер ЕНТ
+                </a>
+                <a href="universities.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 py-4 border-b border-gray-100 dark:border-white/10 hover:text-indigo-600 transition">
+                    <i class="fas fa-university w-6 text-indigo-400"></i> ВУЗы
+                </a>
+                <a href="grant.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 py-4 border-b border-gray-100 dark:border-white/10 text-green-600 hover:text-green-500 transition">
+                    <i class="fas fa-calculator w-6"></i> Гранты
+                </a>
+            </nav>
+            <div class="px-6 py-4 flex flex-col gap-3 mt-2">
+                <a href="login.html" id="mobile-login-btn" onclick="toggleMobileMenu()" class="w-full text-center py-4 rounded-2xl border-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 font-bold text-base">Войти</a>
+                <a href="profile.html" id="mobile-profile-btn" onclick="toggleMobileMenu()" class="hidden w-full text-center bg-indigo-600 text-white py-4 rounded-2xl font-bold text-base">Личный кабинет</a>
             </div>
         </div>
     </nav>
