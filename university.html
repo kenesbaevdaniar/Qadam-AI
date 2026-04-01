@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВУЗ | QADAM.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300 min-h-screen">
+
+    <div class="blob top-0 left-1/4 opacity-30"></div>
+    <div class="blob bottom-0 right-1/4 opacity-30"></div>
+
+    <nav class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/10 bg-white/50 dark:bg-transparent mb-8">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
+                <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-600 dark:text-gray-400">
+                <a href="test.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">Профориентация</a>
+                <a href="ent.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">Тренажер ЕНТ</a>
+                <a href="universities.html" class="text-indigo-600 dark:text-white font-bold transition-all">ВУЗы</a>
+                <a href="grant.html" class="hover:text-green-500 dark:hover:text-green-400 transition-all font-bold flex items-center gap-1">
+                    <i class="fas fa-calculator text-xs"></i> Гранты
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                    <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400"></i>
+                </button>
+            <a href="login.html" id="nav-login-btn" class="hidden glass px-4 py-2 rounded-xl text-sm font-bold border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition">
+                <i class="fas fa-sign-in-alt text-indigo-500"></i>
+                <span>Вход</span>
+            </a>
+            <a href="profile.html" id="nav-profile-btn" class="hidden glass px-4 py-2 rounded-xl text-sm font-bold border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition flex items-center gap-2 group">
+                <i class="fas fa-user text-indigo-500 group-hover:text-white"></i>
+                <span class="hidden sm:inline">Кабинет</span>
+            </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 pb-20 animate-fade-in">
+        <!-- Кнопка назад -->
+        <div class="mb-6">
+            <a href="universities.html" class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                <i class="fas fa-arrow-left"></i> Назад к списку ВУЗов
+            </a>
+        </div>
+
+        <!-- Загрузка -->
+        <div id="uniLoading" class="py-16 text-center">
+            <div class="inline-flex items-center gap-3 glass px-6 py-4 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5">
+                <i class="fas fa-circle-notch fa-spin text-indigo-600 dark:text-indigo-400"></i>
+                <span class="font-bold text-slate-600 dark:text-slate-300">Загружаем данные…</span>
+            </div>
+        </div>
+
+        <!-- Ошибка (нет id или ВУЗ не найден) -->
+        <div id="uniError" class="hidden">
+            <div class="glass p-8 rounded-2xl border border-red-200 dark:border-red-500/30 bg-white dark:bg-white/5 text-center">
+                <i class="fas fa-exclamation-triangle text-4xl text-red-500 dark:text-red-400 mb-4"></i>
+                <p class="text-xl font-bold text-slate-700 dark:text-slate-200 mb-2">ВУЗ не найден</p>
+                <p class="text-slate-500 dark:text-slate-400 mb-6">Проверьте ссылку или вернитесь к списку.</p>
+                <a href="universities.html" class="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-500 transition">
+                    <i class="fas fa-list"></i> К списку ВУЗов
+                </a>
+            </div>
+        </div>
+
+        <!-- Полная карточка ВУЗа (данные из БД) -->
+        <article id="uniCard" class="hidden glass rounded-[2rem] border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden">
+            <!-- Изображение (если есть в БД) -->
+            <div id="uniImageBlock" class="hidden w-full h-48 md:h-64 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img id="uniImage" src="" alt="" class="w-full h-full object-cover">
+            </div>
+            <!-- Шапка с градиентом -->
+            <div id="uniHeader" class="h-40 md:h-48 bg-gradient-to-r from-indigo-600 to-purple-600 relative p-8 flex items-end">
+                <div id="uniBadge" class="absolute top-6 right-6 bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl text-sm text-white font-bold hidden">
+                    <i id="uniBadgeIcon" class="fas fa-check-circle mr-1"></i> <span id="uniBadgeText"></span>
+                </div>
+                <div class="w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center text-indigo-900 font-black text-2xl" id="uniShortCode">—</div>
+            </div>
+
+            <div class="p-8">
+                <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-2" id="uniName">—</h1>
+                <p class="text-slate-500 dark:text-slate-400 mb-8 flex items-center gap-2">
+                    <i class="fas fa-map-marker-alt text-red-500"></i>
+                    <span id="uniCity">—</span>
+                </p>
+
+                <!-- Описание -->
+                <div id="uniDescriptionBlock" class="mb-8 hidden">
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-lg" id="uniDescription"></p>
+                </div>
+
+                <!-- Основные показатели -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                    <div class="glass rounded-2xl p-6 border border-gray-200 dark:border-white/10">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-12 h-12 rounded-xl bg-green-500/10 text-green-600 dark:text-green-400 flex items-center justify-center">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <span class="text-slate-500 dark:text-slate-400 font-medium">Минимальный балл на грант</span>
+                        </div>
+                        <p class="text-2xl font-black text-green-600 dark:text-green-400" id="uniGrantMin">—</p>
+                    </div>
+                    <div class="glass rounded-2xl p-6 border border-gray-200 dark:border-white/10">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                                <i class="fas fa-tenge-sign"></i>
+                            </div>
+                            <span class="text-slate-500 dark:text-slate-400 font-medium">Стоимость обучения</span>
+                        </div>
+                        <p class="text-2xl font-black text-slate-900 dark:text-white" id="uniPrice">—</p>
+                    </div>
+                </div>
+
+                <!-- Статистика (год основания, студенты, рейтинг) -->
+                <div id="uniStatsBlock" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 hidden">
+                    <div id="uniFoundedBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 text-center hidden">
+                        <i class="fas fa-calendar text-2xl text-indigo-500 mb-2"></i>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Год основания</p>
+                        <p class="text-xl font-black text-slate-900 dark:text-white" id="uniFoundedYear">—</p>
+                    </div>
+                    <div id="uniStudentsBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 text-center hidden">
+                        <i class="fas fa-users text-2xl text-indigo-500 mb-2"></i>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Студентов</p>
+                        <p class="text-xl font-black text-slate-900 dark:text-white" id="uniStudentsCount">—</p>
+                    </div>
+                    <div id="uniRatingBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 text-center hidden">
+                        <i class="fas fa-star text-2xl text-yellow-500 mb-2"></i>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Рейтинг</p>
+                        <p class="text-xl font-black text-slate-900 dark:text-white" id="uniRating">—</p>
+                    </div>
+                </div>
+
+                <!-- Контактная информация -->
+                <div id="uniContactsBlock" class="mb-8 hidden">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                        <i class="fas fa-address-card text-indigo-500"></i> Контактная информация
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="uniAddressBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 hidden">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-map-marker-alt text-red-500 mt-1"></i>
+                                <div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Адрес</p>
+                                    <p class="text-sm font-medium text-slate-700 dark:text-slate-300" id="uniAddress">—</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="uniPhoneBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 hidden">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-phone text-green-500 mt-1"></i>
+                                <div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Телефон</p>
+                                    <a href="#" id="uniPhone" class="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">—</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="uniEmailBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 hidden">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-envelope text-blue-500 mt-1"></i>
+                                <div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Email</p>
+                                    <a href="#" id="uniEmail" class="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition break-all">—</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Особенности (теги) -->
+                <div id="uniTagsBlock" class="mb-8 hidden">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                        <i class="fas fa-tags text-indigo-500"></i> Особенности
+                    </h2>
+                    <div id="uniTags" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Факультеты -->
+                <div id="uniFacultiesBlock" class="mb-8 hidden">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                        <i class="fas fa-building text-indigo-500"></i> Факультеты
+                    </h2>
+                    <div id="uniFaculties" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                </div>
+
+                <!-- Специальности -->
+                <div id="uniSpecialtiesBlock" class="mb-8 hidden">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                        <i class="fas fa-book text-indigo-500"></i> Специальности
+                    </h2>
+                    <div id="uniSpecialties" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Направления (majors) -->
+                <div id="uniMajorsBlock" class="mb-8 hidden">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                        <i class="fas fa-graduation-cap text-indigo-500"></i> Направления подготовки
+                    </h2>
+                    <div id="uniMajors" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Дополнительная информация -->
+                <div id="uniAdditionalBlock" class="mb-8 hidden">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                        <i class="fas fa-info-circle text-indigo-500"></i> Дополнительная информация
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div id="uniDormitoryBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 flex items-center gap-3 hidden">
+                            <i class="fas fa-bed text-2xl text-indigo-500"></i>
+                            <div>
+                                <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Общежитие</p>
+                                <p class="text-xs text-green-600 dark:text-green-400 font-bold" id="uniDormitory">Доступно</p>
+                            </div>
+                        </div>
+                        <div id="uniMilitaryBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 flex items-center gap-3 hidden">
+                            <i class="fas fa-shield-alt text-2xl text-indigo-500"></i>
+                            <div>
+                                <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Военная кафедра</p>
+                                <p class="text-xs text-green-600 dark:text-green-400 font-bold" id="uniMilitary">Есть</p>
+                            </div>
+                        </div>
+                        <div id="uniAccreditationBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 hidden">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Аккредитация</p>
+                            <p class="text-sm font-medium text-slate-700 dark:text-slate-300" id="uniAccreditation">—</p>
+                        </div>
+                        <div id="uniLanguagesBlock" class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 hidden">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Языки обучения</p>
+                            <div id="uniLanguages" class="flex flex-wrap gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Сайт -->
+                <div id="uniWebsiteBlock" class="hidden">
+                    <a id="uniWebsite" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 glass px-6 py-3 rounded-xl border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 font-bold hover:bg-indigo-600 hover:text-white transition">
+                        <i class="fas fa-external-link-alt"></i> Официальный сайт
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="relative z-10 bg-white dark:bg-[#0b1120] border-t border-gray-200 dark:border-white/5 pt-16 pb-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="border-t border-gray-200 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
+                <p>&copy; 2025 QADAM.AI. Все права защищены.</p>
+                <div class="flex gap-6">
+                    <a href="universities.html" class="hover:text-indigo-500 transition">ВУЗы</a>
+                    <a href="index.html" class="hover:text-indigo-500 transition">Главная</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Защита: только для авторизованных
+        // Защита страницы: переехала в script.js (protectPage)
+
+        const API_BASE = 'http://127.0.0.1:5000';
+
+        function safeText(v) {
+            return (v ?? '').toString();
+        }
+
+        // Экранируем строки перед вставкой в HTML-шаблоны, чтобы исключить XSS.
+        function escapeHtml(v) {
+            return safeText(v)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Разрешаем только http(s) ссылки (без javascript:/data:).
+        function sanitizeHttpUrl(v) {
+            const s = safeText(v).trim();
+            if (!s) return '';
+            if (!(s.startsWith('http://') || s.startsWith('https://'))) return '';
+            try {
+                return new URL(s).href;
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Санитизация пути к картинке (разрешаем только http(s) или относительные пути вида /uploads/...).
+        function sanitizeImageUrl(v) {
+            const s = safeText(v).trim();
+            if (!s) return '';
+            if (s.startsWith('http://') || s.startsWith('https://')) return s;
+            if (/^\/[a-zA-Z0-9/_\-.]+$/.test(s)) return s;
+            if (/^[a-zA-Z0-9/_\-.]+$/.test(s)) return '/' + s;
+            return '';
+        }
+
+        function formatPrice(value) {
+            if (typeof value !== 'number' || Number.isNaN(value)) return '—';
+            if (value === 0) return 'Бесплатно (грант)';
+            if (value >= 1000) return `от ${Math.round(value / 1000)} 000 ₸/год`;
+            return `от ${value} ₸`;
+        }
+
+        function getUrlId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id') || '';
+        }
+
+        async function loadUniversity() {
+            const id = getUrlId();
+            const loading = document.getElementById('uniLoading');
+            const errorBlock = document.getElementById('uniError');
+            const card = document.getElementById('uniCard');
+
+            if (!id) {
+                if (loading) loading.classList.add('hidden');
+                if (errorBlock) errorBlock.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/universities/${encodeURIComponent(id)}`, { headers: { 'Accept': 'application/json' } });
+                if (!res.ok) throw new Error(res.status === 404 ? 'not_found' : `HTTP ${res.status}`);
+
+                const u = await res.json();
+
+                // Скрываем загрузку, показываем карточку
+                if (loading) loading.classList.add('hidden');
+                if (errorBlock) errorBlock.classList.add('hidden');
+                if (card) card.classList.remove('hidden');
+
+                // Заполняем данные из БД
+                const city = safeText(u.city).toUpperCase();
+                const shortCode = safeText(u.shortCode || u.name.split(' ').slice(0, 1).join('').toUpperCase()).slice(0, 8);
+
+                document.getElementById('uniName').textContent = u.name || '—';
+                document.getElementById('uniCity').textContent = 'г. ' + city || '—';
+                document.getElementById('uniShortCode').textContent = shortCode || '—';
+                document.getElementById('uniGrantMin').textContent = typeof u.grantMin === 'number' ? u.grantMin + ' баллов' : '—';
+                document.getElementById('uniPrice').textContent = formatPrice(u.priceFrom);
+
+                // Описание
+                const descBlock = document.getElementById('uniDescriptionBlock');
+                const descEl = document.getElementById('uniDescription');
+                if (u.description) {
+                    descBlock.classList.remove('hidden');
+                    descEl.textContent = u.description;
+                } else {
+                    descBlock.classList.add('hidden');
+                }
+
+                // Бейдж
+                const badgeEl = document.getElementById('uniBadge');
+                const badgeTextEl = document.getElementById('uniBadgeText');
+                const badgeIconEl = document.getElementById('uniBadgeIcon');
+                if (u.badgeText) {
+                    badgeEl.classList.remove('hidden');
+                    badgeTextEl.textContent = u.badgeText;
+                    if (u.badgeIcon) badgeIconEl.className = u.badgeIcon + ' mr-1';
+                } else {
+                    badgeEl.classList.add('hidden');
+                }
+
+                // Статистика (год основания, студенты, рейтинг)
+                const statsBlock = document.getElementById('uniStatsBlock');
+                let hasStats = false;
+                
+                if (typeof u.foundedYear === 'number') {
+                    document.getElementById('uniFoundedYear').textContent = u.foundedYear;
+                    document.getElementById('uniFoundedBlock').classList.remove('hidden');
+                    hasStats = true;
+                }
+                if (typeof u.studentsCount === 'number') {
+                    document.getElementById('uniStudentsCount').textContent = u.studentsCount.toLocaleString('ru-RU');
+                    document.getElementById('uniStudentsBlock').classList.remove('hidden');
+                    hasStats = true;
+                }
+                if (typeof u.rating === 'number') {
+                    document.getElementById('uniRating').textContent = u.rating.toFixed(1) + '/10';
+                    document.getElementById('uniRatingBlock').classList.remove('hidden');
+                    hasStats = true;
+                }
+                if (hasStats) statsBlock.classList.remove('hidden');
+
+                // Контактная информация
+                const contactsBlock = document.getElementById('uniContactsBlock');
+                let hasContacts = false;
+                
+                if (u.address) {
+                    document.getElementById('uniAddress').textContent = u.address;
+                    document.getElementById('uniAddressBlock').classList.remove('hidden');
+                    hasContacts = true;
+                }
+                if (u.phone) {
+                    const phoneEl = document.getElementById('uniPhone');
+                    phoneEl.textContent = u.phone;
+                    phoneEl.href = 'tel:' + u.phone.replace(/\s/g, '');
+                    document.getElementById('uniPhoneBlock').classList.remove('hidden');
+                    hasContacts = true;
+                }
+                if (u.email) {
+                    const emailEl = document.getElementById('uniEmail');
+                    emailEl.textContent = u.email;
+                    emailEl.href = 'mailto:' + u.email;
+                    document.getElementById('uniEmailBlock').classList.remove('hidden');
+                    hasContacts = true;
+                }
+                if (hasContacts) contactsBlock.classList.remove('hidden');
+
+                // Факультеты
+                const facultiesBlock = document.getElementById('uniFacultiesBlock');
+                const facultiesContainer = document.getElementById('uniFaculties');
+                if (Array.isArray(u.faculties) && u.faculties.length) {
+                    facultiesBlock.classList.remove('hidden');
+                    facultiesContainer.innerHTML = u.faculties.map(f => `
+                        <div class="glass rounded-xl p-4 border border-gray-200 dark:border-white/10 flex items-center gap-3">
+                            <i class="fas fa-university text-indigo-500"></i>
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">${escapeHtml(safeText(f))}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    facultiesBlock.classList.add('hidden');
+                }
+
+                // Специальности
+                const specialtiesBlock = document.getElementById('uniSpecialtiesBlock');
+                const specialtiesContainer = document.getElementById('uniSpecialties');
+                if (Array.isArray(u.specialties) && u.specialties.length) {
+                    specialtiesBlock.classList.remove('hidden');
+                    specialtiesContainer.innerHTML = u.specialties.map(s => `
+                        <span class="px-4 py-2 rounded-xl bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-sm font-medium">${escapeHtml(safeText(s))}</span>
+                    `).join('');
+                } else {
+                    specialtiesBlock.classList.add('hidden');
+                }
+
+                // Теги
+                const tagsBlock = document.getElementById('uniTagsBlock');
+                const tagsContainer = document.getElementById('uniTags');
+                if (Array.isArray(u.tags) && u.tags.length) {
+                    tagsBlock.classList.remove('hidden');
+                    tagsContainer.innerHTML = u.tags.map(t => `
+                        <span class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/10 text-sm font-medium text-slate-700 dark:text-slate-300">${escapeHtml(safeText(t))}</span>
+                    `).join('');
+                } else {
+                    tagsBlock.classList.add('hidden');
+                }
+
+                // Направления
+                const majorsBlock = document.getElementById('uniMajorsBlock');
+                const majorsContainer = document.getElementById('uniMajors');
+                if (Array.isArray(u.majors) && u.majors.length) {
+                    majorsBlock.classList.remove('hidden');
+                    majorsContainer.innerHTML = u.majors.map(m => `
+                        <span class="px-4 py-2 rounded-xl bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-sm font-medium">${escapeHtml(safeText(m))}</span>
+                    `).join('');
+                } else {
+                    majorsBlock.classList.add('hidden');
+                }
+
+                // Дополнительная информация
+                const additionalBlock = document.getElementById('uniAdditionalBlock');
+                let hasAdditional = false;
+
+                if (typeof u.dormitory === 'boolean') {
+                    document.getElementById('uniDormitory').textContent = u.dormitory ? 'Доступно' : 'Недоступно';
+                    document.getElementById('uniDormitory').className = u.dormitory 
+                        ? 'text-xs text-green-600 dark:text-green-400 font-bold' 
+                        : 'text-xs text-red-600 dark:text-red-400 font-bold';
+                    document.getElementById('uniDormitoryBlock').classList.remove('hidden');
+                    hasAdditional = true;
+                }
+                if (typeof u.militaryDepartment === 'boolean') {
+                    document.getElementById('uniMilitary').textContent = u.militaryDepartment ? 'Есть' : 'Нет';
+                    document.getElementById('uniMilitary').className = u.militaryDepartment 
+                        ? 'text-xs text-green-600 dark:text-green-400 font-bold' 
+                        : 'text-xs text-red-600 dark:text-red-400 font-bold';
+                    document.getElementById('uniMilitaryBlock').classList.remove('hidden');
+                    hasAdditional = true;
+                }
+                if (u.accreditation) {
+                    document.getElementById('uniAccreditation').textContent = u.accreditation;
+                    document.getElementById('uniAccreditationBlock').classList.remove('hidden');
+                    hasAdditional = true;
+                }
+                if (Array.isArray(u.languages) && u.languages.length) {
+                    const langsContainer = document.getElementById('uniLanguages');
+                    langsContainer.innerHTML = u.languages.map(l => `
+                        <span class="px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 text-xs font-medium">${escapeHtml(safeText(l))}</span>
+                    `).join('');
+                    document.getElementById('uniLanguagesBlock').classList.remove('hidden');
+                    hasAdditional = true;
+                }
+                if (hasAdditional) additionalBlock.classList.remove('hidden');
+
+                // Сайт
+                const websiteBlock = document.getElementById('uniWebsiteBlock');
+                const websiteLink = document.getElementById('uniWebsite');
+                if (u.website) {
+                    websiteBlock.classList.remove('hidden');
+                    const safeWebsite = sanitizeHttpUrl(u.website);
+                    if (safeWebsite) {
+                        websiteLink.href = safeWebsite;
+                    } else {
+                        websiteBlock.classList.add('hidden');
+                    }
+                } else {
+                    websiteBlock.classList.add('hidden');
+                }
+
+                // Изображение (ссылка или загруженный файл)
+                const imageBlock = document.getElementById('uniImageBlock');
+                const imageEl = document.getElementById('uniImage');
+                const imageUrl = sanitizeImageUrl(u.imageUrl);
+                if (imageUrl) {
+                    imageBlock.classList.remove('hidden');
+                    const src = (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))
+                        ? imageUrl
+                        : (API_BASE + imageUrl);
+                    imageEl.src = src;
+                    imageEl.alt = u.name || 'Фото университета';
+                } else {
+                    imageBlock.classList.add('hidden');
+                }
+
+                document.title = (u.name || 'ВУЗ') + ' | QADAM AI';
+            } catch (e) {
+                if (loading) loading.classList.add('hidden');
+                if (card) card.classList.add('hidden');
+                if (errorBlock) errorBlock.classList.remove('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUniversity);
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход | QADAM.AI</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300 min-h-screen flex flex-col overflow-hidden">
+
+    <div class="blob -top-20 -left-20 animate-pulse"></div>
+    <div class="blob bottom-0 -right-20 opacity-50"></div>
+
+    <nav class="p-6 flex justify-between items-center max-w-7xl mx-auto w-full z-10">
+        <a href="index.html" id="nav-profile-btn" class="hidden text-xl font-extrabold tracking-tighter flex items-center gap-2">
+            <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+        </a>
+        <a href="login.html" id="nav-login-btn" class="hidden text-xl font-extrabold tracking-tighter flex items-center gap-2">
+            <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+        </a>
+        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10 relative overflow-hidden group">
+            <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400 relative z-10 group-hover:rotate-90 transition-transform duration-500"></i>
+        </button>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center p-6 z-10 animate-fade-in">
+        <div class="glass p-8 md:p-12 rounded-[2.5rem] w-full max-w-md bg-white/60 dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-2xl backdrop-blur-xl">
+            
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-black mb-2">С возвращением! 👋</h2>
+                <p class="text-slate-500 dark:text-gray-400 text-sm font-medium">Введите свои данные для входа</p>
+            </div>
+
+            <form class="space-y-5" id="loginForm" onsubmit="handleLogin(event)">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Email</label>
+                    <input type="email" id="loginEmail" placeholder="example@mail.com" class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-indigo-500 outline-none transition font-medium" required>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Пароль</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-indigo-500 outline-none transition font-medium" required>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/30 mt-4">
+                    Войти
+                </button>
+            </form>
+
+            <p class="text-center mt-8 text-sm text-slate-500 dark:text-gray-400">
+                Нет аккаунта? <a href="register.html" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">Создать</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

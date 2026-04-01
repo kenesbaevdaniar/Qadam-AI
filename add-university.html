@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить ВУЗ | QADAM.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300 min-h-screen">
+
+    <div class="blob top-0 left-1/4 opacity-30"></div>
+    <div class="blob bottom-0 right-1/4 opacity-30"></div>
+
+    <nav class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/10 bg-white/50 dark:bg-transparent mb-8">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
+                <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-600 dark:text-gray-400">
+                <a href="test.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">Профориентация</a>
+                <a href="ent.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">Тренажер ЕНТ</a>
+                <a href="universities.html" class="text-indigo-600 dark:text-white font-bold transition-all">ВУЗы</a>
+                <a href="grant.html" class="hover:text-green-500 dark:hover:text-green-400 transition-all font-bold flex items-center gap-1">
+                    <i class="fas fa-calculator text-xs"></i> Гранты
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button type="button" onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                    <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400"></i>
+                </button>
+                <a href="profile.html" class="glass px-4 py-2 rounded-xl text-sm font-bold border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition flex items-center gap-2 group">
+                    <i class="fas fa-user text-indigo-500 group-hover:text-white"></i>
+                    <span class="hidden sm:inline">Кабинет</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20 animate-fade-in">
+        <div class="mb-8">
+            <a href="universities.html" class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                <i class="fas fa-arrow-left"></i> Назад к списку ВУЗов
+            </a>
+        </div>
+
+        <div class="glass rounded-[2rem] border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
+                <h1 class="text-2xl md:text-3xl font-black text-white flex items-center gap-3">
+                    <i class="fas fa-plus-circle"></i> Добавление нового ВУЗа
+                </h1>
+                <p class="text-white/80 text-sm mt-2">Заполните обязательные поля. Форма не отправится пустой.</p>
+            </div>
+
+            <form id="addUniversityForm" class="p-8 space-y-6">
+                <!-- Обязательные поля -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                        <i class="fas fa-asterisk text-red-500"></i> Обязательные поля
+                    </h2>
+                    <div>
+                        <label for="name" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Название университета <span class="text-red-500">*</span></label>
+                        <input type="text" id="name" name="name" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            placeholder="Например: Атырауский университет нефти и газа"
+                            maxlength="200">
+                        <p id="nameError" class="text-red-500 text-xs mt-1 hidden">Введите название.</p>
+                    </div>
+                    <div>
+                        <label for="city" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Город <span class="text-red-500">*</span></label>
+                        <input type="text" id="city" name="city" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            placeholder="Например: АТЫРАУ, АЛМАТЫ, АСТАНА"
+                            maxlength="100">
+                        <p id="cityError" class="text-red-500 text-xs mt-1 hidden">Введите город.</p>
+                    </div>
+                </div>
+
+                <!-- Краткая информация -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                        <i class="fas fa-info-circle text-indigo-500"></i> Краткая информация
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="shortCode" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Короткий код (аббревиатура)</label>
+                            <input type="text" id="shortCode" name="shortCode"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5"
+                                placeholder="AOGU, SAT, КазНУ" maxlength="20">
+                        </div>
+                        <div>
+                            <label for="badgeText" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Бейдж (тип ВУЗа)</label>
+                            <input type="text" id="badgeText" name="badgeText"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5"
+                                placeholder="Государственный, Национальный">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="grantMin" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Минимальный балл на грант</label>
+                            <input type="number" id="grantMin" name="grantMin" min="0" max="140" step="1"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5"
+                                placeholder="65">
+                        </div>
+                        <div>
+                            <label for="priceFrom" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Стоимость обучения (₸/год)</label>
+                            <input type="number" id="priceFrom" name="priceFrom" min="0" step="1000"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5"
+                                placeholder="450000">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Изображение: ссылка или загрузка -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                        <i class="fas fa-image text-indigo-500"></i> Изображение
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Укажите ссылку на изображение или загрузите файл (JPEG, PNG, GIF, WebP, до 5 МБ).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="imageUrl" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Ссылка на изображение</label>
+                            <input type="url" id="imageUrl" name="imageUrl"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5"
+                                placeholder="https://example.com/photo.jpg">
+                        </div>
+                        <div>
+                            <label for="imageFile" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Или загрузить файл</label>
+                            <input type="file" id="imageFile" name="image" accept="image/jpeg,image/png,image/gif,image/webp"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-500 file:text-white file:font-bold">
+                        </div>
+                    </div>
+                    <p id="imageHint" class="text-xs text-slate-400">Если загружаете файл, ссылка не используется.</p>
+                </div>
+
+                <!-- Дополнительные поля (опционально) -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                        <i class="fas fa-align-left text-indigo-500"></i> Описание и контакты
+                    </h2>
+                    <div>
+                        <label for="description" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Описание</label>
+                        <textarea id="description" name="description" rows="3"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 resize-none"
+                            placeholder="Краткое описание университета"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="address" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Адрес</label>
+                            <input type="text" id="address" name="address" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="г. Атырау, пр. Сатпаева, 1">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Телефон</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="+7 (7122) 35-12-34">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="email" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="info@university.kz">
+                        </div>
+                        <div>
+                            <label for="website" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Сайт</label>
+                            <input type="url" id="website" name="website" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="https://university.kz">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label for="foundedYear" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Год основания</label>
+                            <input type="number" id="foundedYear" name="foundedYear" min="1900" max="2030" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="1979">
+                        </div>
+                        <div>
+                            <label for="studentsCount" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Кол-во студентов</label>
+                            <input type="number" id="studentsCount" name="studentsCount" min="0" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="8500">
+                        </div>
+                        <div>
+                            <label for="rating" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Рейтинг (1–10)</label>
+                            <input type="number" id="rating" name="rating" min="0" max="10" step="0.1" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="8.5">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="tags" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Особенности (через запятую)</label>
+                        <input type="text" id="tags" name="tags" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="Общежитие, Военная кафедра">
+                    </div>
+                    <div>
+                        <label for="majors" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Направления (через запятую)</label>
+                        <input type="text" id="majors" name="majors" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="IT, Инженерия, Педагогика">
+                    </div>
+                    <div>
+                        <label for="faculties" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Факультеты (через запятую)</label>
+                        <input type="text" id="faculties" name="faculties" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="Нефтегазовый, Инженерии">
+                    </div>
+                    <div>
+                        <label for="specialties" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Специальности (через запятую)</label>
+                        <input type="text" id="specialties" name="specialties" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="Нефтегазовое дело, Химическая технология">
+                    </div>
+                    <div>
+                        <label for="languages" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Языки обучения (через запятую)</label>
+                        <input type="text" id="languages" name="languages" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="Казахский, Русский, Английский">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="dormitory" name="dormitory" value="true" class="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            <label for="dormitory" class="text-sm font-medium text-slate-700 dark:text-slate-300">Есть общежитие</label>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="militaryDepartment" name="militaryDepartment" value="true" class="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            <label for="militaryDepartment" class="text-sm font-medium text-slate-700 dark:text-slate-300">Военная кафедра</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="accreditation" class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Аккредитация</label>
+                        <input type="text" id="accreditation" name="accreditation" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" placeholder="Государственная">
+                    </div>
+                </div>
+
+                <div id="formMessage" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <button type="submit" id="submitBtn" class="flex-1 py-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-save"></i> Добавить ВУЗ
+                    </button>
+                    <a href="universities.html" class="flex-1 py-4 rounded-xl border border-gray-200 dark:border-white/10 font-bold text-center hover:bg-slate-100 dark:hover:bg-white/10 transition">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="relative z-10 bg-white dark:bg-[#0b1120] border-t border-gray-200 dark:border-white/5 pt-8 pb-6 mt-12">
+        <div class="max-w-7xl mx-auto px-6 text-center text-xs font-bold text-slate-400">
+            <p>&copy; 2025 QADAM.AI. Добавление данных доступно только авторизованным пользователям.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:5000';
+
+        // Доступ только для администратора
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('qadam_token');
+            if (!token) {
+                if (typeof showToast === 'function') showToast('Войдите в аккаунт.');
+                else alert('Войдите в аккаунт.');
+                window.location.href = 'login.html';
+                return;
+            }
+            if (typeof isAdmin !== 'function' || !isAdmin()) {
+                if (typeof showToast === 'function') showToast('Доступ только для администратора.');
+                else alert('Доступ только для администратора.');
+                window.location.href = 'universities.html';
+            }
+        });
+
+        const form = document.getElementById('addUniversityForm');
+        const nameInput = document.getElementById('name');
+        const cityInput = document.getElementById('city');
+        const nameError = document.getElementById('nameError');
+        const cityError = document.getElementById('cityError');
+        const formMessage = document.getElementById('formMessage');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function showFormMessage(text, isError) {
+            formMessage.textContent = text;
+            formMessage.className = 'p-4 rounded-xl text-sm font-medium ' + (isError ? 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-300' : 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300');
+            formMessage.classList.remove('hidden');
+        }
+
+        function hideFormMessage() {
+            formMessage.classList.add('hidden');
+        }
+
+        // Валидация: форма не должна отправляться с пустыми обязательными полями
+        function validateForm() {
+            let valid = true;
+            nameError.classList.add('hidden');
+            cityError.classList.add('hidden');
+
+            const name = (nameInput.value || '').trim();
+            const city = (cityInput.value || '').trim();
+
+            if (!name) {
+                nameError.classList.remove('hidden');
+                nameInput.focus();
+                valid = false;
+            }
+            if (!city) {
+                cityError.classList.remove('hidden');
+                if (valid) cityInput.focus();
+                valid = false;
+            }
+            return valid;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideFormMessage();
+
+            if (!validateForm()) {
+                showFormMessage('Заполните обязательные поля: название и город.', true);
+                return;
+            }
+
+            const formData = new FormData(form);
+            // Если выбран файл — не отправляем imageUrl (бэкенд возьмёт файл)
+            if (document.getElementById('imageFile').files.length > 0) {
+                formData.delete('imageUrl');
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Отправка...';
+
+            const token = localStorage.getItem('qadam_token');
+            if (!token) {
+                showFormMessage('Требуется авторизация.', true);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Добавить ВУЗ';
+                return;
+            }
+
+            try {
+                const res = await fetch(API_BASE + '/api/universities', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: formData
+                });
+                const data = await res.json().catch(() => ({}));
+
+                if (res.ok) {
+                    showFormMessage('ВУЗ успешно добавлен! Перенаправление на карточку...', false);
+                    setTimeout(() => {
+                        window.location.href = 'university.html?id=' + encodeURIComponent(data._id);
+                    }, 1500);
+                } else if (res.status === 403) {
+                    showFormMessage('Доступ только для администратора.', true);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-save"></i> Добавить ВУЗ';
+                } else {
+                    showFormMessage(data.msg || 'Ошибка при добавлении. Проверьте данные и попробуйте снова.', true);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-save"></i> Добавить ВУЗ';
+                }
+            } catch (err) {
+                showFormMessage('Ошибка сети. Убедитесь, что бэкенд запущен на ' + API_BASE, true);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Добавить ВУЗ';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QADAM.AI | Будущее образования</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300">
+
+    <div class="blob -top-20 -left-20 animate-pulse"></div>
+    <div class="blob top-1/2 -right-20 opacity-50"></div>
+
+    <nav class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/10 bg-white/50 dark:bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="home.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-sm italic text-white shadow-lg shadow-indigo-500/20">E</div>
+                <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-600 dark:text-gray-400">
+                <a href="javascript:void(0)" onclick="checkAuth('test.html')" class="hover:text-indigo-600 dark:hover:text-white transition-all">Профориентация</a>
+                <a href="javascript:void(0)" onclick="checkAuth('ent.html')" class="hover:text-indigo-600 dark:hover:text-white transition-all">Тренажер ЕНТ</a>
+                <a href="javascript:void(0)" onclick="checkAuth('universities.html')" class="hover:text-indigo-600 dark:hover:text-white transition-all">ВУЗы</a>
+                <a href="javascript:void(0)" onclick="checkAuth('grant.html')" class="hover:text-green-500 dark:hover:text-green-400 transition-all font-bold flex items-center gap-1">
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl hover:scale-110 transition bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                    <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400"></i>
+                </button>
+                
+                <a href="login.html" class="hidden sm:block text-sm font-bold opacity-70 hover:opacity-100 transition">Вход</a>
+                <a href="register.html" class="bg-indigo-600 px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-500 transition active:scale-95">Начать</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="max-w-7xl mx-auto px-6 pt-24 pb-20 text-center relative animate-fade-in">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs font-bold mb-8 border-gray-200 dark:border-white/10 bg-white/30 dark:bg-white/5">
+            <span class="flex h-2 w-2 rounded-full bg-indigo-500 animate-ping"></span>
+            Твой персональный ИИ-гид по Атырау
+        </div>
+        
+        <h1 class="text-5xl md:text-8xl font-black mb-8 leading-tight tracking-tight text-slate-900 dark:text-white">
+            Твоя карьера <br> начинается с <span class="gradient-text">ИИ</span>
+        </h1>
+        
+        <p class="text-slate-500 dark:text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-medium">
+            Мы объединили нейросети, базу ВУЗов Казахстана и тренажер ЕНТ, чтобы ты поступил туда, где тебя ждет успех.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button onclick="checkAuth('test.html')" class="w-full sm:w-auto px-12 py-4 bg-indigo-600 text-white font-extrabold rounded-2xl hover:scale-105 hover:bg-indigo-500 transition shadow-2xl shadow-indigo-500/40">
+            Пройти тест
+            </button>
+            <button onclick="checkAuth('ent.html')" class="w-full sm:w-auto px-12 py-4 glass font-extrabold rounded-2xl hover:bg-white dark:hover:bg-white/10 hover:text-indigo-600 dark:hover:text-white transition border border-gray-200 dark:border-white/10">
+            Тренажер ЕНТ
+            </button>
+        </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-3 gap-8">
+        <div class="glass p-10 rounded-[2.5rem] hover:border-indigo-500/50 transition-all group bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+            <div class="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-500 mb-8 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300">
+                <i class="fas fa-microchip text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold mb-4">AI Профориентация</h3>
+            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed font-medium">Нейросеть анализирует твои таланты и подбирает профессию, которая не исчезнет завтра.</p>
+        </div>
+
+        <div class="glass p-10 rounded-[2.5rem] hover:border-pink-500/50 transition-all group bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+            <div class="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-500 mb-8 group-hover:scale-110 group-hover:bg-pink-500 group-hover:text-white transition-all duration-300">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold mb-4">ВУЗы Атырау и РК</h3>
+            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed font-medium">Найди университет в своем городе с нужной специальностью и проходным баллом.</p>
+        </div>
+
+        <div class="glass p-10 rounded-[2.5rem] hover:border-emerald-500/50 transition-all group bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+            <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-8 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                <i class="fas fa-fire text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold mb-4">Смарт-подготовка</h3>
+            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed font-medium">Тренажер ЕНТ, который объясняет ошибки и помогает набрать заветные 140 баллов.</p>
+        </div>
+    </section>
+
+    <div class="fixed bottom-8 right-8 z-50 group">
+        <div id="chat-window" class="hidden mb-6 w-85 md:w-96 h-[500px] glass rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden border-white/20 animate-fade-in bg-white dark:bg-[#1e293b]">
+            <div class="p-6 bg-indigo-600 text-white flex justify-between items-center shadow-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-md">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-sm">AI Ассистент</p>
+                        <p class="text-[10px] opacity-80">Онлайн | Помогаю Абитуриентам</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-full transition">✕</button>
+            </div>
+            
+            <div class="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50 dark:bg-transparent" id="chat-messages">
+                <div class="bg-indigo-600 text-white p-4 rounded-2xl rounded-tl-none text-xs shadow-sm max-w-[85%]">
+                    Привет! Я помогу тебе выбрать путь. С какой страницы начнем? ✨
+                </div>
+            </div>
+
+            <div class="p-4 bg-white dark:bg-black/20 border-t border-gray-100 dark:border-white/10">
+                <div class="relative flex items-center">
+                    <input type="text" placeholder="Твой вопрос..." class="w-full bg-slate-100 dark:bg-white/5 border border-transparent focus:border-indigo-500 rounded-xl px-4 py-3 text-xs outline-none transition dark:text-white">
+                    <button class="absolute right-2 w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center hover:bg-indigo-500 transition">
+                        <i class="fas fa-paper-plane text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="toggleChat()" class="w-16 h-16 bg-indigo-600 text-white rounded-full shadow-2xl flex items-center justify-center text-xl hover:rotate-12 hover:scale-110 transition-all active:scale-95 shadow-indigo-500/40 relative">
+            <span class="absolute inset-0 bg-indigo-400 animate-ping rounded-full opacity-20"></span>
+            <i class="fas fa-magic relative z-10"></i>
+        </button>
+    </div>
+
+    <footer class="relative z-10 bg-white dark:bg-[#0b1120] border-t border-gray-200 dark:border-white/5 pt-16 pb-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            
+            <div class="col-span-1 md:col-span-1">
+                <a href="index.html" class="text-2xl font-extrabold tracking-tighter flex items-center gap-2 mb-6">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-lg italic text-white shadow-lg shadow-indigo-500/30">E</div>
+                    <span class="dark:text-white">QADAM.</span>
+                </a>
+                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                    Твой персональный ИИ-гид по поступлению. Профориентация, подготовка к ЕНТ и анализ грантов в одном месте.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-indigo-600 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-blue-500 hover:text-white transition">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-black hover:text-white transition">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Навигация</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="index.html" class="hover:text-indigo-500 transition">Главная</a></li>
+                    <li><a href="test.html" class="hover:text-indigo-500 transition">Профориентация</a></li>
+                    <li><a href="ent.html" class="hover:text-indigo-500 transition">Тренажер ЕНТ</a></li>
+                    <li><a href="universities.html" class="hover:text-indigo-500 transition">ВУЗы Казахстана</a></li>
+                    <li><a href="grant.html" class="hover:text-green-500 transition text-green-600 dark:text-green-400">Калькулятор Грантов</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Полезное</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="#" class="hover:text-indigo-500 transition">Как выбрать профессию?</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Календарь абитуриента 2025</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Гранты и Скидки</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Помощь (FAQ)</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Контакты</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt mt-1 text-indigo-500"></i>
+                        <span>Казахстан, г. Атырау,<br>пр. Сатпаева 1</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-indigo-500"></i>
+                        <a href="mailto:support@edupath.kz" class="hover:text-indigo-500 transition">support@edupath.kz</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-phone text-indigo-500"></i>
+                        <a href="tel:+77771234567" class="hover:text-indigo-500 transition">+7 (777) 123-45-67</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
+            <p>&copy; 2025 QADAM.AI. Все права защищены.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-indigo-500 transition">Конфиденциальность</a>
+                <a href="#" class="hover:text-indigo-500 transition">Условия использования</a>
+            </div>
+        </div>
+    </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

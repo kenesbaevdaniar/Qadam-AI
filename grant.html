@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор Гранта | QADAM.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Кастомный стиль для ползунка */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid #4f46e5;
+            cursor: pointer;
+            margin-top: -12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.1s;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 999px;
+        }
+
+        .dark input[type=range]::-webkit-slider-runnable-track {
+            background: #334155;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-slate-100 text-slate-900 dark:bg-[#0b1120] dark:text-white transition-colors duration-300 min-h-screen flex flex-col font-['Plus_Jakarta_Sans']">
+
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-500/20 rounded-full blur-[100px] animate-pulse">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-[100px] animate-pulse">
+        </div>
+    </div>
+
+    <nav
+        class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/20 bg-white/70 dark:bg-[#1e293b]/70 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
+                <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+            </a>
+
+            <div class="hidden md:flex space-x-6 text-sm font-bold text-slate-500 dark:text-slate-400">
+                <a href="test.html"
+                    class="hover:text-indigo-600 dark:hover:text-white transition-all">Профориентация</a>
+                <a href="ent.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">ЕНТ</a>
+                <a href="universities.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">ВУЗы</a>
+                <a href="grant.html"
+                    class="text-indigo-600 dark:text-white bg-indigo-50 dark:bg-white/10 px-3 py-1 rounded-lg">Гранты</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="toggleTheme()"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-200 dark:bg-white/10 hover:bg-slate-300 transition">
+                    <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400"></i>
+                </button>
+                <a href="login.html" id="nav-login-btn"
+                    class="hidden bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-500 transition shadow-lg">
+                    Вход
+                </a>
+                <a href="profile.html" id="nav-profile-btn"
+                    class="hidden bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition shadow-lg">
+                    Кабинет
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 max-w-5xl mx-auto px-4 w-full pb-20 relative z-10 pt-8">
+
+        <div
+            class="glass p-8 md:p-10 rounded-[3rem] bg-white dark:bg-[#1e293b] border border-white/20 shadow-2xl mb-12 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-yellow-500 to-green-500">
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-10">
+
+                <div class="flex flex-col items-center justify-center w-full md:w-1/3 text-center">
+                    <div class="relative w-40 h-40 flex items-center justify-center mb-4">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="12" fill="transparent"
+                                class="text-gray-200 dark:text-slate-700" />
+                            <circle id="score-circle" cx="80" cy="80" r="70" stroke="currentColor" stroke-width="12"
+                                fill="transparent" stroke-dasharray="440" stroke-dashoffset="200" stroke-linecap="round"
+                                class="text-indigo-600 transition-all duration-500" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="score-display" class="text-5xl font-black tracking-tighter">85</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase mt-1">баллов</span>
+                        </div>
+                    </div>
+
+                    <input type="range" id="score-input" min="50" max="140" value="85" oninput="updateUI()"
+                        onchange="calculateChances()" class="w-full max-w-[200px]">
+                </div>
+
+                <div class="w-full md:w-2/3 space-y-6">
+                    <div>
+                        <h1 class="text-3xl font-black mb-2">Проверь свои шансы 🎯</h1>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Алгоритм анализирует проходные
+                            баллы прошлого года и твои льготы.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-book text-indigo-500"></i>
+                            </div>
+                            <select id="subject-select" onchange="calculateChances()"
+                                class="w-full pl-11 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-black/20 border-2 border-transparent focus:border-indigo-500 font-bold outline-none cursor-pointer appearance-none transition hover:bg-slate-100 dark:hover:bg-black/30 text-sm">
+                                <option value="math_phys">Математика + Физика</option>
+                                <option value="math_info">Математика + Информатика</option>
+                                <option value="bio_chem">Биология + Химия</option>
+                                <option value="geo_eng">География + Английский</option>
+                                <option value="world_history">Всемирная история + Человек</option>
+                            </select>
+                            <i
+                                class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <label
+                                class="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-indigo-500 cursor-pointer transition bg-slate-50 dark:bg-transparent"
+                                id="label-quota-village">
+                                <input type="checkbox" id="quota-village" onchange="calculateChances()"
+                                    class="hidden peer">
+                                <i class="fas fa-tractor text-xl text-slate-400 peer-checked:text-indigo-500 mb-1"></i>
+                                <span
+                                    class="text-[10px] font-bold uppercase text-slate-400 peer-checked:text-indigo-600">Сельская</span>
+                            </label>
+                            <label
+                                class="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-indigo-500 cursor-pointer transition bg-slate-50 dark:bg-transparent"
+                                id="label-quota-social">
+                                <input type="checkbox" id="quota-social" onchange="calculateChances()"
+                                    class="hidden peer">
+                                <i class="fas fa-users text-xl text-slate-400 peer-checked:text-indigo-500 mb-1"></i>
+                                <span
+                                    class="text-[10px] font-bold uppercase text-slate-400 peer-checked:text-indigo-600">Соц.
+                                    квота</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <div>
+                <div class="flex items-center justify-between mb-6 px-2">
+                    <h2 class="text-xl font-black flex items-center gap-2">
+                        <span
+                            class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 flex items-center justify-center text-sm"><i
+                                class="fas fa-map-marker-alt"></i></span>
+                        ВУЗы Атырау
+                    </h2>
+                    <span class="text-xs font-bold bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full">Твой
+                        город</span>
+                </div>
+                <div id="local-results" class="space-y-4">
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-6 px-2">
+                    <h2 class="text-xl font-black flex items-center gap-2">
+                        <span
+                            class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center text-sm"><i
+                                class="fas fa-globe"></i></span>
+                        По Казахстану
+                    </h2>
+                </div>
+                <div id="global-results" class="space-y-4">
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer
+        class="relative z-10 bg-white dark:bg-[#0b1120] border-t border-gray-200 dark:border-white/5 pt-16 pb-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+
+                <div class="col-span-1 md:col-span-1">
+                    <a href="index.html" class="text-2xl font-extrabold tracking-tighter flex items-center gap-2 mb-6">
+
+                        <span class="dark:text-white">QADAM.AI</span>
+                    </a>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                        Твой персональный ИИ-гид по поступлению. Профориентация, подготовка к ЕНТ и анализ грантов в
+                        одном месте.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-indigo-600 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-blue-500 hover:text-white transition">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-black hover:text-white transition">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-lg mb-6 dark:text-white">Навигация</h3>
+                    <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                        <li><a href="index.html" class="hover:text-indigo-500 transition">Главная</a></li>
+                        <li><a href="test.html" class="hover:text-indigo-500 transition">Профориентация</a></li>
+                        <li><a href="ent.html" class="hover:text-indigo-500 transition">Тренажер ЕНТ</a></li>
+                        <li><a href="universities.html" class="hover:text-indigo-500 transition">ВУЗы Казахстана</a>
+                        </li>
+                        <li><a href="grant.html"
+                                class="hover:text-green-500 transition text-green-600 dark:text-green-400">Калькулятор
+                                Грантов</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-lg mb-6 dark:text-white">Полезное</h3>
+                    <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                        <li><a href="#" class="hover:text-indigo-500 transition">Как выбрать профессию?</a></li>
+                        <li><a href="#" class="hover:text-indigo-500 transition">Календарь абитуриента 2025</a></li>
+                        <li><a href="#" class="hover:text-indigo-500 transition">Гранты и Скидки</a></li>
+                        <li><a href="#" class="hover:text-indigo-500 transition">Помощь (FAQ)</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-lg mb-6 dark:text-white">Контакты</h3>
+                    <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-indigo-500"></i>
+                            <span>Казахстан, г. Атырау,<br>пр. Сатпаева 1</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-indigo-500"></i>
+                            <a href="mailto:support@edupath.kz"
+                                class="hover:text-indigo-500 transition">support@edupath.kz</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone text-indigo-500"></i>
+                            <a href="tel:+77771234567" class="hover:text-indigo-500 transition">+7 (777) 123-45-67</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-gray-200 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
+                <p>&copy; 2025 QADAM.AI. Все права защищены.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-indigo-500 transition">Конфиденциальность</a>
+                    <a href="#" class="hover:text-indigo-500 transition">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        // ДАННЫЕ ВУЗОВ
+        const universitiesDB = [
+            // АТЫРАУ
+            { name: "АУНиГ (Нефти и Газа)", city: "Atyrau", subjects: ["math_phys", "math_info", "chem_bio"], cutoff: 65, type: "local", icon: "fa-oil-well" },
+            { name: "Атырауский ун. им. Досмухамедова", city: "Atyrau", subjects: ["math_phys", "math_info", "bio_chem", "geo_eng", "world_history"], cutoff: 70, type: "local", icon: "fa-university" },
+
+            // КАЗАХСТАН
+            { name: "Satbayev University", city: "Almaty", subjects: ["math_phys", "math_info"], cutoff: 95, type: "global", icon: "fa-rocket" },
+            { name: "КазНУ им. аль-Фараби", city: "Almaty", subjects: ["math_phys", "math_info", "bio_chem", "geo_eng", "world_history"], cutoff: 110, type: "global", icon: "fa-graduation-cap" },
+            { name: "ЕНУ им. Гумилева", city: "Astana", subjects: ["math_phys", "math_info", "geo_eng"], cutoff: 100, type: "global", icon: "fa-building-columns" },
+            { name: "Астана IT Университет", city: "Astana", subjects: ["math_info"], cutoff: 105, type: "global", icon: "fa-laptop-code" },
+            { name: "Мед. университет Астана", city: "Astana", subjects: ["bio_chem"], cutoff: 115, type: "global", icon: "fa-user-doctor" },
+            { name: "SDU University", city: "Almaty", subjects: ["math_info", "geo_eng"], cutoff: 90, type: "global", icon: "fa-code" },
+        ];
+
+        // 1. Обновление UI ползунка и круга
+        function updateUI() {
+            const val = document.getElementById('score-input').value;
+            const circle = document.getElementById('score-circle');
+
+            // Обновляем текст
+            document.getElementById('score-display').innerText = val;
+
+            // Логика круга (SVG stroke-dashoffset)
+            // Длина окружности (r=70) ≈ 440
+            const max = 140;
+            const min = 50;
+            const percent = (val - min) / (max - min);
+            const offset = 440 - (440 * percent);
+
+            circle.style.strokeDashoffset = offset;
+
+            // Цвет в зависимости от балла
+            if (val < 70) {
+                circle.classList.remove('text-yellow-500', 'text-green-500');
+                circle.classList.add('text-red-500');
+            } else if (val < 100) {
+                circle.classList.remove('text-red-500', 'text-green-500');
+                circle.classList.add('text-yellow-500');
+            } else {
+                circle.classList.remove('text-red-500', 'text-yellow-500');
+                circle.classList.add('text-green-500');
+            }
+        }
+
+        // 2. Расчет шансов (Основная логика)
+        function calculateChances() {
+            const score = parseInt(document.getElementById('score-input').value);
+            const subject = document.getElementById('subject-select').value;
+            const isVillage = document.getElementById('quota-village').checked;
+            const isSocial = document.getElementById('quota-social').checked;
+
+            // Визуальное выделение активных квот
+            document.getElementById('label-quota-village').className = isVillage
+                ? "flex-1 flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 cursor-pointer transition"
+                : "flex-1 flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-indigo-500 cursor-pointer transition bg-slate-50 dark:bg-transparent";
+
+            document.getElementById('label-quota-social').className = isSocial
+                ? "flex-1 flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 cursor-pointer transition"
+                : "flex-1 flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-indigo-500 cursor-pointer transition bg-slate-50 dark:bg-transparent";
+
+            // Бонус к баллам (виртуальный)
+            let effectiveScore = score;
+            if (isVillage) effectiveScore += 5;
+            if (isSocial) effectiveScore += 3;
+
+            const localContainer = document.getElementById('local-results');
+            const globalContainer = document.getElementById('global-results');
+
+            localContainer.innerHTML = '';
+            globalContainer.innerHTML = '';
+
+            const relevantUnis = universitiesDB.filter(uni => uni.subjects.includes(subject));
+
+            if (relevantUnis.length === 0) {
+                globalContainer.innerHTML = '<div class="p-6 text-center opacity-50">Нет данных для этого профиля.</div>';
+                return;
+            }
+
+            relevantUnis.forEach(uni => {
+                let chance = 0;
+                let statusColor = "";
+                let statusText = "";
+                let statusIcon = "";
+
+                // Логика вероятности
+                const diff = effectiveScore - uni.cutoff;
+
+                if (diff >= 10) {
+                    chance = 95; statusColor = "text-emerald-500"; statusText = "Высокий шанс"; statusIcon = "fa-check-circle";
+                    barColor = "bg-emerald-500";
+                } else if (diff >= 0) {
+                    chance = 75; statusColor = "text-yellow-500"; statusText = "Средний шанс"; statusIcon = "fa-exclamation-circle";
+                    barColor = "bg-yellow-500";
+                } else if (diff >= -10) {
+                    chance = 40; statusColor = "text-orange-500"; statusText = "Рискованно"; statusIcon = "fa-bolt";
+                    barColor = "bg-orange-500";
+                } else {
+                    chance = 10; statusColor = "text-red-500"; statusText = "Маловероятно"; statusIcon = "fa-times-circle";
+                    barColor = "bg-red-500";
+                }
+
+                const cardHTML = `
+                    <div class="glass p-5 rounded-3xl flex items-center gap-5 bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-white/5 hover:scale-[1.02] transition shadow-sm animate-fade-in">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 text-xl shadow-inner">
+                            <i class="fas ${uni.icon}"></i>
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="font-bold text-base truncate pr-2">${uni.name}</h3>
+                                <div class="text-right">
+                                    <span class="block text-sm font-black ${statusColor}">${chance}%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 text-xs text-slate-400 mb-3">
+                                <span>${uni.city}</span>
+                                <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                                <span>Проходной: ${uni.cutoff}</span>
+                            </div>
+
+                            <div class="w-full bg-slate-100 dark:bg-black/20 h-2 rounded-full overflow-hidden">
+                                <div class="${barColor} h-full rounded-full transition-all duration-1000 relative overflow-hidden" style="width: ${chance}%">
+                                    <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (uni.type === 'local') {
+                    localContainer.innerHTML += cardHTML;
+                } else {
+                    globalContainer.innerHTML += cardHTML;
+                }
+            });
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            calculateChances();
+        });
+    </script>
+</body>
+
+</html>

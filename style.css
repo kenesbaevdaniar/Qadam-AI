@@ -1,0 +1,113 @@
+/* 1. ПОДКЛЮЧЕНИЕ ШРИФТА */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap');
+
+/* 2. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ */
+:root {
+    --accent-indigo: #6366f1;
+    --accent-pink: #f43f5e;
+    --transition-speed: 0.3s;
+}
+
+/* 3. БАЗОВЫЕ НАСТРОЙКИ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    line-height: 1.6;
+    /* Убираем жесткий цвет фона, чтобы работал Tailwind dark: */
+}
+
+/* 4. ЭФФЕКТ СТЕКЛА (GLASSMORPHISM) */
+.glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background var(--transition-speed), border var(--transition-speed);
+}
+
+/* Специфические настройки стекла для ТЕМНОЙ темы */
+.dark .glass {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Специфические настройки стекла для СВЕТЛОЙ темы */
+html:not(.dark) .glass {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* 5. ГРАДИЕНТНЫЙ ТЕКСТ */
+.gradient-text {
+    background: linear-gradient(90deg, var(--accent-indigo), var(--accent-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+/* 6. ДЕКОРАТИВНЫЕ ПЯТНА (BLOBS) */
+.blob {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.15) 0%, rgba(244, 63, 94, 0.05) 100%);
+    filter: blur(100px);
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+/* Скрываем блобы в светлой теме для лучшей читаемости */
+html:not(.dark) .blob {
+    opacity: 0;
+}
+
+/* 7. АНИМАЦИИ */
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Плавный пульс для индикатора ИИ */
+@keyframes pulse-custom {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 8. КАСТОМИЗАЦИЯ СКРОЛЛБАРА */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-indigo);
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | qadam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300 min-h-screen flex flex-col">
+
+    <nav class="p-6 flex justify-between items-center max-w-7xl mx-auto w-full">
+        <a href="index.html" class="text-xl font-extrabold tracking-tighter">
+            QADAM.<span class="text-indigo-600 dark:text-indigo-400">AI</span>
+        </a>
+        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl hover:scale-110 transition bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10 relative overflow-hidden">
+            <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400 relative z-10"></i>
+        </button>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="glass p-8 md:p-12 rounded-[2.5rem] w-full max-w-md bg-white/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-2xl animate-fade-in">
+            <h2 class="text-3xl font-black mb-2">Создать аккаунт</h2>
+            <p class="text-slate-500 dark:text-gray-400 mb-8 text-sm font-medium">Начни свой путь к идеальной профессии</p>
+
+            <form class="space-y-5" onsubmit="handleRegistration(event)">
+    <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Имя</label>
+        <input type="text" id="username" placeholder="Алдияр" class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-indigo-500 outline-none transition font-medium" required>
+    </div>
+
+    <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Твой город</label>
+        <div class="relative group">
+            <select id="city" class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-indigo-500 outline-none transition font-medium appearance-none cursor-pointer">
+                <option value="Astana" class="dark:bg-[#0f172a]">г. Астана</option>
+                <option value="Almaty" class="dark:bg-[#0f172a]">г. Алматы</option>
+                <option value="Shymkent" class="dark:bg-[#0f172a]">г. Шымкент</option>
+                <option value="Abai" class="dark:bg-[#0f172a]">Абайская область</option>
+                <option value="Akmola" class="dark:bg-[#0f172a]">Акмолинская область</option>
+                <option value="Aktobe" class="dark:bg-[#0f172a]">Актюбинская область</option>
+                <option value="Almaty_reg" class="dark:bg-[#0f172a]">Алматинская область</option>
+                <option value="Atyrau" class="dark:bg-[#0f172a]">Атырауская область</option>
+                <option value="ZKO" class="dark:bg-[#0f172a]">Западно-Казахстанская область</option>
+                <option value="Zhambyl" class="dark:bg-[#0f172a]">Жамбылская область</option>
+                <option value="Zhetysu" class="dark:bg-[#0f172a]">Жетысуская область</option>
+                <option value="Karaganda" class="dark:bg-[#0f172a]">Карагандинская область</option>
+                <option value="Kostanay" class="dark:bg-[#0f172a]">Костанайская область</option>
+                <option value="Kyzylorda" class="dark:bg-[#0f172a]">Кызылординская область</option>
+                <option value="Mangystau" class="dark:bg-[#0f172a]">Мангистауская область</option>
+                <option value="Pavlodar" class="dark:bg-[#0f172a]">Павлодарская область</option>
+                <option value="SKO" class="dark:bg-[#0f172a]">Северо-Казахстанская область</option>
+                <option value="Turkistan" class="dark:bg-[#0f172a]">Туркестанская область</option>
+                <option value="Ulytau" class="dark:bg-[#0f172a]">Улытауская область</option>
+                <option value="VKO" class="dark:bg-[#0f172a]">Восточно-Казахстанская область</option>
+            </select>
+            <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-hover:text-indigo-500 transition">
+                <i class="fas fa-chevron-down text-xs"></i>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Email</label>
+        <input type="email" id="email" placeholder="example@mail.com" class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-indigo-500 outline-none transition font-medium" required>
+    </div>
+
+    <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Пароль</label>
+        <input type="password" id="password" placeholder="••••••••" class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-indigo-500 outline-none transition font-medium" required>
+        <p id="password-status" class="mt-2 text-[10px] font-medium transition-all duration-300">
+            Минимум 8 символов, заглавная буква и цифра.
+        </p>
+    </div>
+
+    <p id="error-message" class="text-red-500 text-xs font-bold mb-4 hidden animate-pulse"></p>
+
+    <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/30 mt-4">
+        Зарегистрироваться
+    </button>
+            </form>
+
+            <p class="text-center mt-8 text-sm text-slate-500 dark:text-gray-400">
+                Уже есть аккаунт? <a href="login.html" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">Войти</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

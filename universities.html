@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВУЗы | QADAM.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .heart-btn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .heart-btn:active {
+            transform: scale(0.8);
+        }
+        .heart-btn.is-favorite i {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300 min-h-screen">
+
+    <div class="blob top-0 left-1/4 opacity-30"></div>
+    <div class="blob bottom-0 right-1/4 opacity-30"></div>
+
+    <nav class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/10 bg-white/50 dark:bg-transparent mb-8">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        
+        <a href="index.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
+            <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+        </a>
+        
+        <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-600 dark:text-gray-400">
+            <a href="test.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">Профориентация</a>
+            <a href="ent.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">Тренажер ЕНТ</a>
+            <a href="universities.html" class="text-indigo-600 dark:text-white font-bold transition-all">ВУЗы</a>
+            <a href="grant.html" class="hover:text-green-500 dark:hover:text-green-400 transition-all font-bold flex items-center gap-1">
+            <i class="fas fa-calculator text-xs"></i> Гранты
+            </a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400"></i>
+            </button>
+            
+            <a href="login.html" id="nav-login-btn" class="hidden glass px-4 py-2 rounded-xl text-sm font-bold border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition">
+                <i class="fas fa-sign-in-alt text-indigo-500"></i>
+                <span>Вход</span>
+            </a>
+            <a href="profile.html" id="nav-profile-btn" class="hidden glass px-4 py-2 rounded-xl text-sm font-bold border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition flex items-center gap-2 group">
+                <i class="fas fa-user text-indigo-500 group-hover:text-white"></i> 
+                <span class="hidden sm:inline">Кабинет</span>
+            </a>
+        </div>
+
+    </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 animate-fade-in">
+        
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black mb-6">Найди свой <span class="gradient-text">Идеальный ВУЗ</span></h1>
+            
+            <div class="max-w-4xl mx-auto relative group">
+                <div class="absolute inset-0 bg-indigo-500 blur-xl opacity-20 group-hover:opacity-30 transition"></div>
+                    <div class="relative glass rounded-2xl p-2 flex flex-col md:flex-row items-center bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 gap-2">
+        
+                        <div class="flex items-center w-full flex-1">
+                        <i class="fas fa-search text-slate-400 ml-4 text-xl"></i>
+                        <input type="text" id="searchInput" placeholder="Поиск университета..." 
+                        class="w-full bg-transparent border-none outline-none px-4 py-3 text-slate-900 dark:text-white font-medium placeholder-slate-400" 
+                        onkeyup="handleSearchInput()">
+                    </div>
+
+            <div class="w-full md:w-auto px-2 relative">
+                <select id="cityFilter" onchange="filterUniversities()" 
+                     class="w-full md:w-48 appearance-none bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 outline-none px-4 py-3 rounded-xl text-sm font-bold text-slate-700 dark:text-white cursor-pointer hover:bg-slate-50 dark:hover:bg-white/20 transition pr-10">
+                <option value="ALL" class="dark:bg-[#0f172a]">Все города</option>
+                <option value="АСТАНА" class="dark:bg-[#0f172a]">Астана</option>
+                <option value="АТЫРАУ" class="dark:bg-[#0f172a]">Атырау</option>
+                <option value="АЛМАТЫ" class="dark:bg-[#0f172a]">Алматы</option>
+                </select>
+            <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+            </div>
+
+        <button onclick="filterUniversities()" class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-500 transition shadow-lg">
+            Найти
+        </button>
+            </div>
+        </div>
+
+            <div class="flex flex-wrap justify-center gap-3 mt-6 items-center">
+                <!-- Кнопка «Добавить ВУЗ» видна только администратору -->
+                <span id="adminAddUni" class="hidden">
+                    <a href="add-university.html" class="px-4 py-2 rounded-full glass border border-green-500/50 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold hover:bg-green-500 hover:text-white transition inline-flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Добавить ВУЗ
+                    </a>
+                </span>
+                <button onclick="setSearch('Атырау')" class="px-4 py-2 rounded-full glass border border-indigo-500/30 text-xs font-bold hover:bg-indigo-600 hover:text-white transition">📍 Атырау</button>
+                <button onclick="setSearch('IT')" class="px-4 py-2 rounded-full glass border border-gray-200 dark:border-white/10 text-xs font-bold hover:bg-white/10 transition">💻 IT технологии</button>
+                <button onclick="setSearch('Нефть')" class="px-4 py-2 rounded-full glass border border-gray-200 dark:border-white/10 text-xs font-bold hover:bg-white/10 transition">🛢️ Нефтегазовое дело</button>
+                <button onclick="setSearch('Педагогика')" class="px-4 py-2 rounded-full glass border border-gray-200 dark:border-white/10 text-xs font-bold hover:bg-white/10 transition">📚 Педагогика</button>
+            </div> 
+        </div>
+
+        <div id="uniGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Карточки подгружаются из БД через API -->
+        </div>
+
+        <div id="uniLoading" class="py-16 text-center">
+            <div class="inline-flex items-center gap-3 glass px-6 py-4 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5">
+                <i class="fas fa-circle-notch fa-spin text-indigo-600 dark:text-indigo-400"></i>
+                <span class="font-bold text-slate-600 dark:text-slate-300">Загружаем университеты…</span>
+            </div>
+        </div>
+
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fas fa-search text-6xl text-slate-300 dark:text-slate-700 mb-4"></i>
+            <p class="text-xl font-bold text-slate-500">По вашему запросу ничего не найдено</p>
+            <button onclick="setSearch('')" class="mt-4 text-indigo-500 hover:underline">Сбросить фильтры</button>
+        </div>
+
+    </main>
+
+    <footer class="relative z-10 bg-white dark:bg-[#0b1120] border-t border-gray-200 dark:border-white/5 pt-16 pb-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            
+            <div class="col-span-1 md:col-span-1">
+                <a href="index.html" class="text-2xl font-extrabold tracking-tighter flex items-center gap-2 mb-6">
+                    <img src="logo/logo.png" alt="QADAM.AI" class="h-12">
+                    <span class="dark:text-white">QADAM.AI</span>
+                </a>
+                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                    Твой персональный ИИ-гид по поступлению. Профориентация, подготовка к ЕНТ и анализ грантов в одном месте.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-indigo-600 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-blue-500 hover:text-white transition">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-black hover:text-white transition">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Навигация</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="index.html" class="hover:text-indigo-500 transition">Главная</a></li>
+                    <li><a href="test.html" class="hover:text-indigo-500 transition">Профориентация</a></li>
+                    <li><a href="ent.html" class="hover:text-indigo-500 transition">Тренажер ЕНТ</a></li>
+                    <li><a href="universities.html" class="hover:text-indigo-500 transition">ВУЗы Казахстана</a></li>
+                    <li><a href="grant.html" class="hover:text-green-500 transition text-green-600 dark:text-green-400">Калькулятор Грантов</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Полезное</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="#" class="hover:text-indigo-500 transition">Как выбрать профессию?</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Календарь абитуриента 2025</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Гранты и Скидки</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Помощь (FAQ)</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Контакты</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt mt-1 text-indigo-500"></i>
+                        <span>Казахстан, г. Атырау,<br>пр. Сатпаева 1</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-indigo-500"></i>
+                        <a href="mailto:support@edupath.kz" class="hover:text-indigo-500 transition">support@edupath.kz</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-phone text-indigo-500"></i>
+                        <a href="tel:+77771234567" class="hover:text-indigo-500 transition">+7 (777) 123-45-67</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
+            <p>&copy; 2025 QADAM.AI. Все права защищены.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-indigo-500 transition">Конфиденциальность</a>
+                <a href="#" class="hover:text-indigo-500 transition">Условия использования</a>
+            </div>
+        </div>
+    </div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <script>
+        // Защита страницы ВУЗов: переехала в script.js (protectPage)
+
+        const API_BASE = 'http://127.0.0.1:5000';
+
+        function formatMoneyKztFrom(value) {
+            if (typeof value !== 'number' || Number.isNaN(value)) return '—';
+            if (value >= 1000) {
+                const k = Math.round(value / 1000);
+                return `от ${k}к ₸`;
+            }
+            return `от ${value} ₸`;
+        }
+
+        function safeText(v) {
+            return (v ?? '').toString();
+        }
+
+        // Экранируем строки перед вставкой в HTML-шаблоны, чтобы исключить XSS.
+        function escapeHtml(v) {
+            return safeText(v)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Санитизация для класса у `<i class="...">` (разрешаем только безопасные символы).
+        function sanitizeCssClass(v) {
+            return safeText(v).replace(/[^a-zA-Z0-9 _-]/g, '');
+        }
+
+        // Санитизация URL картинки (разрешаем только http(s) или относительные пути без кавычек).
+        function sanitizeImageUrl(v) {
+            const s = safeText(v).trim();
+            if (!s) return '';
+            if (s.startsWith('http://') || s.startsWith('https://')) return s;
+            // Разрешаем только относительные пути вроде `/uploads/uni-123.jpg`
+            if (/^\/[a-zA-Z0-9/_\-.]+$/.test(s)) return s;
+            if (/^[a-zA-Z0-9/_\-.]+$/.test(s)) return '/' + s;
+            return '';
+        }
+
+        function pickTheme(idx) {
+            const themes = [
+                { header: 'from-blue-600 to-indigo-600', accentText: 'text-blue-900', hoverBorder: 'hover:border-indigo-500/50', titleHover: 'group-hover:text-indigo-500', button: 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-500/20' },
+                { header: 'from-orange-400 to-pink-500', accentText: 'text-orange-600', hoverBorder: 'hover:border-pink-500/50', titleHover: 'group-hover:text-pink-500', button: 'bg-gray-900 hover:opacity-80 dark:bg-white dark:text-black' },
+                { header: 'from-emerald-600 to-teal-600', accentText: 'text-emerald-700', hoverBorder: 'hover:border-emerald-500/50', titleHover: 'group-hover:text-emerald-500', button: 'bg-gray-900 hover:opacity-80 dark:bg-white dark:text-black' },
+                { header: 'from-violet-600 to-fuchsia-600', accentText: 'text-violet-700', hoverBorder: 'hover:border-violet-500/50', titleHover: 'group-hover:text-violet-500', button: 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-500/20' },
+                { header: 'from-sky-600 to-cyan-600', accentText: 'text-sky-700', hoverBorder: 'hover:border-sky-500/50', titleHover: 'group-hover:text-sky-500', button: 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-500/20' },
+            ];
+            return themes[idx % themes.length];
+        }
+
+        function renderUniversityCard(u, idx) {
+            const t = pickTheme(idx);
+            const cityRaw = safeText(u.city).toUpperCase();
+            const nameRaw = safeText(u.name);
+            const shortCodeRaw = safeText(
+                u.shortCode || nameRaw.split(' ').slice(0, 1).join('').toUpperCase()
+            ).slice(0, 6);
+
+            const city = escapeHtml(cityRaw);
+            const name = escapeHtml(nameRaw);
+            const shortCode = escapeHtml(shortCodeRaw);
+
+            const badgeText = escapeHtml(safeText(u.badgeText || ''));
+            const badgeIcon = sanitizeCssClass(u.badgeIcon || 'fas fa-check-circle');
+            const grantMin = typeof u.grantMin === 'number' ? `${u.grantMin} баллов` : '—';
+            const priceFrom = formatMoneyKztFrom(u.priceFrom);
+            const tags = Array.isArray(u.tags) ? u.tags : [];
+            
+            const imageUrl = sanitizeImageUrl(u.imageUrl);
+            const fullUrl = imageUrl ? ((imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) ? imageUrl : `${API_BASE}${imageUrl}`) : '';
+
+            const tagsHtml = tags.slice(0, 6).map(tag => `
+                <span class="text-[10px] bg-slate-100 dark:bg-white/10 px-2 py-1 rounded-md">${escapeHtml(tag)}</span>
+            `).join('');
+
+            return `
+                <div class="uni-card glass p-0 rounded-[2rem] border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 ${t.hoverBorder} transition group overflow-hidden flex flex-col" data-city="${city}">
+                    <div class="h-32 bg-gradient-to-r ${t.header} relative p-6 flex items-end overflow-hidden">
+                        ${fullUrl ? `
+                            <img src="${fullUrl}" class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none group-hover:scale-110 transition-transform duration-500" 
+                                 onerror="this.style.display='none'">
+                            <div class="absolute inset-0 bg-black/30 z-[1]"></div>
+                        ` : ''}
+
+                        <!-- Кнопка Избранное -->
+                        <button onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite('${u._id}', this)" 
+                                class="heart-btn absolute top-4 right-4 w-10 h-10 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white z-[4] hover:bg-white hover:text-red-500 transition-all duration-300">
+                            <i class="${userFavorites.includes(u._id) ? 'fas' : 'far'} fa-heart text-lg"></i>
+                        </button>
+                        
+                        ${badgeText ? `
+                            <div class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-lg text-xs text-white font-bold border border-white/20 z-[2]">
+                                <i class="${badgeIcon}"></i> ${badgeText}
+                            </div>
+                        ` : ''}
+                        
+                        <div class="w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center ${t.accentText} font-black text-xl translate-y-8 border-4 border-slate-50 dark:border-[#1e293b] relative z-[3]">
+                            ${shortCode}
+                        </div>
+                    </div>
+                    <div class="p-6 pt-10 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold mb-1 ${t.titleHover} transition">${name}</h3>
+                        <p class="text-slate-500 text-sm mb-4"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> г. ${city}</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm border-b border-gray-100 dark:border-white/5 pb-2">
+                                <span class="text-slate-400">Грант (мин.):</span>
+                                <span class="font-bold text-green-500">${grantMin}</span>
+                            </div>
+                            <div class="flex justify-between text-sm border-b border-gray-100 dark:border-white/5 pb-2">
+                                <span class="text-slate-400">Стоимость:</span>
+                                <span class="font-bold">${priceFrom}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                ${tagsHtml}
+                            </div>
+                        </div>
+
+                        <a href="university.html?id=${(u._id || '').toString()}" class="w-full mt-auto py-3 rounded-xl ${t.button} text-white font-bold transition shadow-lg text-center block">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- ЛОГИКА ИЗБРАННОГО ---
+        let userFavorites = [];
+
+        async function fetchUserFavorites() {
+            const token = localStorage.getItem('qadam_token');
+            if (!token) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/user/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const user = await response.json();
+                    userFavorites = (user.favorites || []).map(f => f._id || f);
+                }
+            } catch (err) {
+                console.error("Ошибка при получении избранного:", err);
+            }
+        }
+
+        async function toggleFavorite(uniId, btn) {
+            const token = localStorage.getItem('qadam_token');
+            if (!token) {
+                alert("Пожалуйста, войдите в систему, чтобы добавлять в избранное");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/user/favorites/toggle/${uniId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const icon = btn.querySelector('i');
+                    if (data.isFavorite) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        icon.classList.add('text-red-500');
+                        showToast("Добавлено в избранное! ❤️");
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.remove('text-red-500');
+                        icon.classList.add('far');
+                        showToast("Удалено из избранного");
+                    }
+                    // Обновляем локальный список
+                    const index = userFavorites.indexOf(uniId);
+                    if (index === -1) userFavorites.push(uniId);
+                    else userFavorites.splice(index, 1);
+                }
+            } catch (err) {
+                console.error("Ошибка при переключении избранного:", err);
+            }
+        }
+
+        function updateCityFilterFromData(universities) {
+            const select = document.getElementById('cityFilter');
+            if (!select) return;
+
+            const current = select.value || 'ALL';
+            const cities = Array.from(
+                new Set((universities || []).map(u => safeText(u.city).toUpperCase()).filter(Boolean))
+            ).sort((a, b) => a.localeCompare(b, 'ru'));
+
+            select.innerHTML = '';
+
+            const allOpt = document.createElement('option');
+            allOpt.value = 'ALL';
+            allOpt.textContent = 'Все города';
+            allOpt.className = 'dark:bg-[#0f172a]';
+            select.appendChild(allOpt);
+
+            cities.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                opt.className = 'dark:bg-[#0f172a]';
+                select.appendChild(opt);
+            });
+
+            // Восстанавливаем выбор, если он ещё актуален
+            if ([...select.options].some(o => o.value === current)) {
+                select.value = current;
+            }
+        }
+
+        // Debounce для поиска: ждём 500мс после последнего ввода перед запросом к БД
+        let searchTimeout;
+        function handleSearchInput() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                loadUniversities();
+            }, 500);
+        }
+
+        // Загрузка ВУЗов с фильтрами из БД (поиск и город)
+        async function loadUniversities() {
+            // Подгружаем актуальные избранные
+            await fetchUserFavorites();
+            
+            const grid = document.getElementById('uniGrid');
+            const loading = document.getElementById('uniLoading');
+            const noRes = document.getElementById('noResults');
+            const searchInput = document.getElementById('searchInput');
+            const citySelect = document.getElementById('cityFilter');
+
+            if (!grid) return;
+            if (loading) loading.classList.remove('hidden');
+            if (noRes) noRes.classList.add('hidden');
+
+            const searchText = searchInput ? searchInput.value.trim() : '';
+            const selectedCity = citySelect ? citySelect.value : 'ALL';
+
+            try {
+                // Формируем URL с параметрами поиска и города
+                const params = new URLSearchParams();
+                if (searchText) params.append('search', searchText);
+                if (selectedCity && selectedCity !== 'ALL') params.append('city', selectedCity);
+
+                const url = `${API_BASE}/api/universities${params.toString() ? '?' + params.toString() : ''}`;
+                const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+                const universities = await res.json();
+                
+                // Обновляем список городов в фильтре (если это первая загрузка)
+                if (!citySelect || citySelect.options.length <= 4) {
+                    updateCityFilterFromData(universities);
+                }
+
+                // Отрисовываем карточки из ответа БД
+                grid.innerHTML = (universities || []).map((u, idx) => renderUniversityCard(u, idx)).join('');
+
+                // Показываем сообщение "ничего не найдено", если результатов нет
+                if (noRes) {
+                    if (universities.length === 0) {
+                        noRes.classList.remove('hidden');
+                    } else {
+                        noRes.classList.add('hidden');
+                    }
+                }
+            } catch (e) {
+                console.error('Ошибка загрузки вузов:', e);
+                grid.innerHTML = `
+                    <div class="col-span-full">
+                        <div class="glass p-6 rounded-2xl border border-red-200 dark:border-red-500/30 bg-white dark:bg-white/5">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center">
+                                    <i class="fas fa-triangle-exclamation"></i>
+                                </div>
+                                <div>
+                                    <p class="font-black text-lg">Не удалось загрузить данные из базы</p>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                                        Проверь, что запущен бэкенд на <span class="font-bold">127.0.0.1:5000</span> и MongoDB доступна.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } finally {
+                if (loading) loading.classList.add('hidden');
+            }
+        }
+
+        // Старая функция filterUniversities теперь просто перезагружает данные из БД
+        function filterUniversities() {
+            loadUniversities();
+        }
+
+        function setSearch(text) {
+            const input = document.getElementById('searchInput');
+            const citySelect = document.getElementById('cityFilter');
+
+            if (!input || !citySelect) return;
+
+            if (text === 'Атырау' || text === 'АТЫРАУ') {
+                citySelect.value = 'АТЫРАУ';
+                input.value = '';
+            } else if (text === 'Алматы' || text === 'АЛМАТЫ') {
+                citySelect.value = 'АЛМАТЫ';
+                input.value = '';
+            } else if (text === 'Астана' || text === 'АСТАНА') {
+                citySelect.value = 'АСТАНА';
+                input.value = '';
+            } else {
+                input.value = text;
+            }
+
+            // Перезагружаем данные из БД с новыми фильтрами
+            loadUniversities();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUniversities();
+        });
+    </script>
+</body>
+</html>

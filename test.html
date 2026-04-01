@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Тест | QADAM.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300 min-h-screen flex flex-col">
+
+    <div class="blob top-0 right-0 opacity-40"></div>
+    <div class="blob bottom-0 left-0 opacity-40"></div>
+
+    <nav class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/10 bg-white/50 dark:bg-transparent mb-8">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
+                <span class="dark:text-white">QADAM.</span><span class="text-indigo-600 dark:text-indigo-400">AI</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-600 dark:text-gray-400">
+                <a href="test.html" class="text-indigo-600 dark:text-white font-bold transition-all">Профориентация</a>
+                <a href="ent.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">Тренажер ЕНТ</a>
+                <a href="universities.html" class="hover:text-indigo-600 dark:hover:text-white transition-all">ВУЗы</a>
+                <a href="grant.html" class="hover:text-green-500 dark:hover:text-green-400 transition-all font-bold flex items-center gap-1">
+                <i class="fas fa-calculator text-xs"></i> Гранты
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
+            <a href="login.html" id="nav-login-btn" class="hidden glass px-4 py-2 rounded-xl text-sm font-bold border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition">
+                <i class="fas fa-sign-in-alt text-indigo-500"></i>
+                <span>Вход</span>
+            </a>
+            <a href="profile.html" id="nav-profile-btn" class="hidden glass px-4 py-2 rounded-xl text-sm font-bold border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition flex items-center gap-2 group">
+                <i class="fas fa-user text-indigo-500 group-hover:text-white"></i> 
+                <span class="hidden sm:inline">Кабинет</span>
+            </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center p-4 relative z-10">
+        
+        <div id="quiz-container" class="w-full max-w-2xl glass p-8 md:p-12 rounded-[2.5rem] bg-white/60 dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-2xl relative overflow-hidden animate-fade-in">
+            
+            <div class="mb-8">
+                <div class="flex justify-between text-xs font-bold text-slate-400 mb-2">
+                    <span id="question-counter">Вопрос 1 из 5</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-indigo-600 transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <h2 id="question-text" class="text-2xl md:text-3xl font-black mb-8 leading-tight min-h-[80px]">
+                Загрузка вопроса...
+            </h2>
+
+            <div id="answers-grid" class="grid grid-cols-1 gap-4 mb-8">
+                </div>
+
+            <div class="flex justify-between items-center mt-4">
+                <button onclick="restartTest()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-sm font-bold transition">
+                    <i class="fas fa-redo"></i> Заново
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/30">
+                    Далее <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="result-container" class="hidden w-full max-w-2xl glass p-8 md:p-12 rounded-[2.5rem] bg-white/60 dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-2xl text-center animate-fade-in">
+            <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white text-4xl mx-auto mb-6 shadow-lg shadow-green-500/40">
+                <i class="fas fa-check"></i>
+            </div>
+            
+            <h2 class="text-3xl font-black mb-2">Твой результат готов!</h2>
+            <p class="text-slate-500 dark:text-gray-400 mb-8">ИИ проанализировал твои ответы. Тебе идеально подходит:</p>
+
+            <div class="bg-indigo-600 text-white p-6 rounded-2xl mb-8 shadow-xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <h3 id="result-title" class="text-2xl font-black mb-2 relative z-10">Загрузка...</h3>
+                <p id="result-desc" class="opacity-90 text-sm relative z-10">Описание...</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="universities.html" class="bg-white text-indigo-600 border border-indigo-200 px-6 py-3 rounded-xl font-bold hover:bg-slate-50 transition">
+                    Подобрать ВУЗ
+                </a>
+                <button onclick="restartTest()" class="text-slate-500 hover:text-white transition font-bold text-sm px-6 py-3">
+                    Пройти еще раз
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="relative z-10 bg-white dark:bg-[#0b1120] border-t border-gray-200 dark:border-white/5 pt-16 pb-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            
+            <div class="col-span-1 md:col-span-1">
+                <a href="index.html" class="text-2xl font-extrabold tracking-tighter flex items-center gap-2 mb-6">
+                    <img src="logo/logo.png" alt="QADAM.AI" class="h-12">
+                    <span class="dark:text-white">QADAM.AI</span>
+                </a>
+                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                    Твой персональный ИИ-гид по поступлению. Профориентация, подготовка к ЕНТ и анализ грантов в одном месте.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-indigo-600 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-blue-500 hover:text-white transition">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-black hover:text-white transition">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Навигация</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="index.html" class="hover:text-indigo-500 transition">Главная</a></li>
+                    <li><a href="test.html" class="hover:text-indigo-500 transition">Профориентация</a></li>
+                    <li><a href="ent.html" class="hover:text-indigo-500 transition">Тренажер ЕНТ</a></li>
+                    <li><a href="universities.html" class="hover:text-indigo-500 transition">ВУЗы Казахстана</a></li>
+                    <li><a href="grant.html" class="hover:text-green-500 transition text-green-600 dark:text-green-400">Калькулятор Грантов</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Полезное</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="#" class="hover:text-indigo-500 transition">Как выбрать профессию?</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Календарь абитуриента 2025</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Гранты и Скидки</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Помощь (FAQ)</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Контакты</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt mt-1 text-indigo-500"></i>
+                        <span>Казахстан, г. Атырау,<br>пр. Сатпаева 1</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-indigo-500"></i>
+                        <a href="mailto:support@edupath.kz" class="hover:text-indigo-500 transition">support@edupath.kz</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-phone text-indigo-500"></i>
+                        <a href="tel:+77771234567" class="hover:text-indigo-500 transition">+7 (777) 123-45-67</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
+            <p>&copy; 2025 QADAM.AI. Все права защищены.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-indigo-500 transition">Конфиденциальность</a>
+                <a href="#" class="hover:text-indigo-500 transition">Условия использования</a>
+            </div>
+        </div>
+    </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="test-engine.js"></script> 
+</body>
+</html>

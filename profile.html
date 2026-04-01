@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | QADAM.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white transition-colors duration-300 min-h-screen">
+
+    <div class="blob top-0 left-0 opacity-40"></div>
+    <div class="blob bottom-0 right-0 opacity-40"></div>
+
+    <nav class="sticky top-0 z-50 mx-4 mt-4 rounded-2xl glass border-b border-white/10 bg-white/50 dark:bg-transparent mb-8">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-extrabold tracking-tighter flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-sm italic text-white">E</div>
+                <span class="hidden sm:inline">Личный кабинет</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center glass rounded-xl bg-white/20 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                    <i id="theme-icon" class="fas fa-sun text-orange-500 dark:text-yellow-400"></i>
+                </button>
+                <a href="login.html" id="nav-login-btn" class="hidden text-sm font-bold opacity-70 hover:opacity-100 transition">
+                    <i class="fas fa-sign-in-alt mr-1"></i> Войти
+                </a>
+                <a href="index.html" id="nav-profile-btn" class="hidden text-sm font-bold opacity-70 hover:opacity-100 transition">
+                    <i class="fas fa-home mr-1"></i> На главную
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 animate-fade-in">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass p-6 rounded-[2rem] text-center border border-gray-200 dark:border-white/10 bg-white/60 dark:bg-white/5">
+                    <div class="relative group cursor-pointer mb-4 mx-auto w-24 h-24" onclick="document.getElementById('avatarInput').click()">
+                        <div class="w-full h-full rounded-full border-4 border-indigo-500/30 p-1 overflow-hidden bg-slate-200 dark:bg-white/10 flex items-center justify-center relative">
+                            <img id="profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" class="w-full h-full object-cover rounded-full shadow-xl">
+                            
+                            <!-- Overlay при наведении -->
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition rounded-full">
+                                <i class="fas fa-camera text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-6 h-6 bg-green-500 border-4 border-white dark:border-[#1e293b] rounded-full"></div>
+                        
+                        <!-- Скрытый инпут -->
+                        <input type="file" id="avatarInput" class="hidden" accept="image/*" onchange="handleAvatarChange(event)">
+                    </div>
+                    
+                    <h2 id="profile-name" class="text-xl font-black mb-1">Загрузка...</h2>
+                    <p id="profile-city-role" class="text-xs font-bold uppercase tracking-wider text-indigo-500 mb-4">Атырау • Абитуриент</p>
+                    
+                    <button onclick="handleLogout()" class="w-full py-3 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition font-bold text-sm flex items-center justify-center gap-2">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </div>
+
+                <div class="glass p-4 rounded-3xl border border-gray-200 dark:border-white/10 bg-white/60 dark:bg-white/5 hidden lg:block">
+                    <nav class="space-y-2">
+                        <a href="#" class="block px-4 py-3 rounded-xl bg-indigo-600 text-white font-bold text-sm shadow-lg shadow-indigo-500/30">
+                            <i class="fas fa-chart-pie w-6"></i> Обзор
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 space-y-6">
+                
+                <div class="glass p-8 rounded-[2rem] bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-2xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h1 class="text-3xl font-black mb-2">Привет, будущий студент! 🚀</h1>
+                        <p class="opacity-90 max-w-lg">ИИ проанализировал твои интересы. У тебя отличные шансы поступить на грант в этом году.</p>
+                    </div>
+                    <i class="fas fa-rocket absolute -bottom-10 -right-10 text-9xl opacity-20 rotate-12"></i>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="glass p-6 rounded-[2rem] border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-indigo-500/50 transition group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xl">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-600 text-xs font-bold">Рекомендовано</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-500 dark:text-gray-400">Твоя профессия</h3>
+                        <p id="profile-profession" class="text-2xl font-black mb-4 group-hover:text-indigo-500 transition">Определяется...</p>
+                        <a href="test.html" class="text-sm font-bold text-indigo-500 hover:underline">Пройти тест заново &rarr;</a>
+                    </div>
+
+                    <div class="glass p-6 rounded-[2rem] border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-pink-500/50 transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-pink-100 dark:bg-pink-500/20 flex items-center justify-center text-pink-600 dark:text-pink-400 text-xl">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <span class="text-2xl font-black">85%</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-500 dark:text-gray-400">Подготовка к ЕНТ</h3>
+                        <p id="profile-ent-name" class="text-sm font-semibold text-indigo-500 mb-2 mt-1">Профиль не выбран</p>
+                        
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 h-3 rounded-full mt-2 overflow-hidden">
+                            <div id="ent-progress-bar" class="bg-gradient-to-r from-indigo-500 to-pink-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+                        </div>
+                        <p id="ent-score-text" class="text-xs text-slate-400 mt-2">Пройди тест ЕНТ, чтобы увидеть прогресс</p>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-[2rem] border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fas fa-heart text-red-500"></i> Избранные ВУЗы
+                    </h3>
+                    
+                    <div id="favorites-container" class="space-y-4">
+                        <p class="text-sm text-slate-400">Загрузка ваших избранных вузов...</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="relative z-10 bg-white dark:bg-[#0b1120] border-t border-gray-200 dark:border-white/5 pt-16 pb-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            
+            <div class="col-span-1 md:col-span-1">
+                <a href="index.html" class="text-2xl font-extrabold tracking-tighter flex items-center gap-2 mb-6">
+                    <img src="logo/logo.png" alt="QADAM.AI" class="h-12">
+                    <span class="dark:text-white">QADAM.AI</span>
+                </a>
+                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                    Твой персональный ИИ-гид по поступлению. Профориентация, подготовка к ЕНТ и анализ грантов в одном месте.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-indigo-600 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-blue-500 hover:text-white transition">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 hover:bg-black hover:text-white transition">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Навигация</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="index.html" class="hover:text-indigo-500 transition">Главная</a></li>
+                    <li><a href="test.html" class="hover:text-indigo-500 transition">Профориентация</a></li>
+                    <li><a href="ent.html" class="hover:text-indigo-500 transition">Тренажер ЕНТ</a></li>
+                    <li><a href="universities.html" class="hover:text-indigo-500 transition">ВУЗы Казахстана</a></li>
+                    <li><a href="grant.html" class="hover:text-green-500 transition text-green-600 dark:text-green-400">Калькулятор Грантов</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Полезное</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li><a href="#" class="hover:text-indigo-500 transition">Как выбрать профессию?</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Календарь абитуриента 2025</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Гранты и Скидки</a></li>
+                    <li><a href="#" class="hover:text-indigo-500 transition">Помощь (FAQ)</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-6 dark:text-white">Контакты</h3>
+                <ul class="space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt mt-1 text-indigo-500"></i>
+                        <span>Казахстан, г. Атырау,<br>пр. Сатпаева 1</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-indigo-500"></i>
+                        <a href="mailto:support@edupath.kz" class="hover:text-indigo-500 transition">support@edupath.kz</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-phone text-indigo-500"></i>
+                        <a href="tel:+77771234567" class="hover:text-indigo-500 transition">+7 (777) 123-45-67</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400">
+            <p>&copy; 2025 QADAM.AI. Все права защищены.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-indigo-500 transition">Конфиденциальность</a>
+                <a href="#" class="hover:text-indigo-500 transition">Условия использования</a>
+            </div>
+        </div>
+    </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Специфичный скрипт для этой страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Получаем данные из localStorage (для быстрой отрисовки)
+            const userInfoStr = localStorage.getItem('user_info');
+            const profession = localStorage.getItem('userProfession');
+            const lastScore = localStorage.getItem('lastEntScore');
+            
+            // Карта регионов для красивого отображения
+            const regionMap = {
+                "Astana": "г. Астана", "Almaty": "г. Алматы", "Shymkent": "г. Шымкент",
+                "Abai": "Абайская область", "Akmola": "Акмолинская область", "Aktobe": "Актюбинская область",
+                "Almaty_reg": "Алматинская область", "Atyrau": "Атырауская область",
+                "ZKO": "Западно-Казахстанская область", "Zhambyl": "Жамбылская область",
+                "Zhetysu": "Жетысуская область", "Karaganda": "Карагандинская область",
+                "Kostanay": "Костанайская область", "Kyzylorda": "Кызылординская область",
+                "Mangystau": "Мангистауская область", "Pavlodar": "Павлодарская область",
+                "SKO": "Северо-Казахстанская область", "Turkistan": "Туркестанская область",
+                "Ulytau": "Улытауская область", "VKO": "Восточно-Казахстанская область"
+            };
+
+            const renderUser = (user) => {
+                document.getElementById('profile-name').innerText = user.username || "Студент";
+                const cityKey = user.city || "Atyrau";
+                const cityDisplayName = regionMap[cityKey] || cityKey || "Казахстан";
+                document.getElementById('profile-city-role').innerText = `${cityDisplayName} • Абитуриент`;
+                
+                if (user.profileImage) {
+                    document.getElementById('profile-img').src = `http://127.0.0.1:5000${user.profileImage}`;
+                }
+
+                // Рендерим избранное
+                renderFavorites(user.favorites);
+            };
+
+            const renderFavorites = (favorites) => {
+                const container = document.getElementById('favorites-container');
+                if (!container) return;
+
+                if (!favorites || favorites.length === 0) {
+                    container.innerHTML = '<p class="text-xs text-slate-400 py-4 italic text-center">У вас пока нет избранных вузов ❤️</p>';
+                    return;
+                }
+
+                container.innerHTML = favorites.map(uni => {
+                    const name = uni.name || 'Университет';
+                    const shortName = uni.shortCode || name.substring(0, 4).toUpperCase();
+                    const grantInfo = uni.grantMin ? `Грант: ${uni.grantMin}+` : 'Грант: —';
+                    
+                    return `
+                        <div onclick="window.location.href='university.html?id=${uni._id}'" 
+                             class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-transparent hover:border-indigo-500 transition cursor-pointer group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-[10px] group-hover:scale-110 transition shadow-lg">
+                                    ${shortName}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">${name}</h4>
+                                    <p class="text-xs text-slate-500">г. ${uni.city || 'Не указан'}</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-indigo-500 group-hover:text-indigo-600 transition">${grantInfo}</span>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            // 2. Первичная отрисовка из кеша
+            if (userInfoStr) {
+                try {
+                    renderUser(JSON.parse(userInfoStr));
+                } catch (e) { console.error(e); }
+            }
+
+            // 3. Загрузка свежих данных с сервера
+            fetchProfile();
+
+            async function fetchProfile() {
+                const token = localStorage.getItem('qadam_token');
+                if (!token) return;
+
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/user/profile', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (response.ok) {
+                        const user = await response.json();
+                        localStorage.setItem('user_info', JSON.stringify(user));
+                        renderUser(user);
+                    }
+                } catch (err) {
+                    console.error("Ошибка при получении профиля:", err);
+                }
+            }
+
+            // 4. Отработка смены фото
+            window.handleAvatarChange = async (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                const token = localStorage.getItem('qadam_token');
+                if (!token) return alert('Пожалуйста, войдите снова');
+
+                showToast("Загрузка фото...");
+
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/user/upload-avatar', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        showToast("Фото обновлено! ✨");
+                        renderUser(data.user);
+                        localStorage.setItem('user_info', JSON.stringify(data.user));
+                    } else {
+                        const err = await response.json();
+                        alert(`Ошибка: ${err.msg || "Что-то пошло не так"}`);
+                    }
+                } catch (err) {
+                    console.error("Fetch error:", err);
+                    alert("Не удалось связаться с сервером. Убедитесь, что сервер запущен.");
+                }
+            };
+
+            // ... остальной код (профессия и баллы) ...
+            const entProfileName = localStorage.getItem('userEntProfileName');
+
+            if (profession) {
+                document.getElementById('profile-profession').innerText = profession.replace(/💻|🤝|🎨|💼/g, '').trim();
+            }
+
+            if (entProfileName) {
+                document.getElementById('profile-ent-name').innerText = "Профиль: " + entProfileName;
+            }
+
+            if (lastScore) {
+                const score = parseInt(lastScore);
+                const percent = Math.min(Math.round((score / 140) * 100), 100);
+                document.getElementById('ent-progress-bar').style.width = percent + '%';
+                document.getElementById('ent-score-text').innerHTML = `Последний результат: <b>${score} баллов</b> | Прогресс: ${percent}%`;
+            }
+        });
+    </script>
+</body>
+</html>
