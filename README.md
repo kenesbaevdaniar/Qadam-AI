@@ -182,7 +182,10 @@ node seed_admin.js          # Создать аккаунт администра
 
 ## 👥 Команда
 
-- **Daniar Kenesbaev** — Full-stack разработчик  
+- **Daniar Kenesbaev** — Full-stack разработчик
+- **Bulatov Isa** — Full-stack разработчик
+- **Akkali Asylzhan** — Full-stack разработчик
+- **Sapiolla Nurdaulet** — Full-stack разработчик  
 - Проект разработан в г. **Атырау**, Казахстан 🇰🇿
 
 ---
